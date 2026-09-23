@@ -20,7 +20,7 @@ metaRows: Prepared for=Johannes Le Roux & build team;Date=23 September 2026;Stat
 2. **Simulator aces happen more often than real ones.** Golfzon's own data works out to about **1 in 7,000** par-3 shots, against about 1 in 12,500 for an amateur on a real course. Korea's per-game screen-golf insurance ran claims **16× higher** than on-course cover and loses money. Prizes must scale with distance, and paid attempts must be capped.
 3. **Money on a single shot is a legal grey zone.** US precedent (Florida AGO 90-58; *Las Vegas Hacienda v. Gibson*) treats an insured hole-in-one contest as a prize contract, not a bet. But single-shot odds mean some markets will treat it as gambling. Free play goes global. Paid shots open market by market, starting with **South Africa and the US "dominant-factor" states**.
 
-**The base case: Golfzon.** Get Lucky is already ordering **272 Golfzon bays** for Virgin Active (200 bays, 130 clubs) and Planet Fitness (72 bays, 42 clubs) in South Africa, in phases from 2027 to 2029. That order is our way into Golfzon's software:
+**The base case: Golfzon.** Get Lucky is proposing **272 Golfzon bays** for Virgin Active (200 bays, 130 clubs) and Planet Fitness (72 bays, 42 clubs) in South Africa. They are financed by RMB and phased from 2027 to 2029. That programme is our way into Golfzon's software:
 - **Get Lucky mode goes inside Golfzon.** The holes, the prize ladder and the insured shot run inside Golfzon's own software, not in a separate app.
 - **The gym bays prove it.** They are the live reference, with about **95 paid shots per bay per month** at maturity in the existing bay model.
 - **Then it goes global.** Golfzon takes it to its **~13,000 locations in 40+ countries**. Paid play runs where it's legal, free play everywhere else.
@@ -28,7 +28,7 @@ metaRows: Prepared for=Johannes Le Roux & build team;Date=23 September 2026;Stat
 Golfzon's closed platform works in our favour here. Its bays are installed by Golfzon, it logs members in, it records swing video (NASMO), and Golfzon holds a decade of ace data, including 143,020 aces in 2022. That covers the three hardest problems: shot integrity, insurer pricing and distribution.
 
 **The recommendation.**
-- Put the software integration on the table **in the same negotiation as the hardware order**.
+- Put the software integration on the table **in the same negotiation as the hardware order**. The full deal sequence (Golfzon, gyms, RMB, Icons, Santam and Ernie Els) is in the companion **Deal Sequence** document.
 - Build the Get Lucky cloud platform: wallet, KYC, insurance, claims and payouts. Golfzon builds "Get Lucky mode" in its client.
 - Go live on the first Virgin Active and Planet Fitness bays in 2027.
 - Roll out to Golfzon's US venues in 2028, and to its global network from 2029.
@@ -137,12 +137,12 @@ Skill Strike proves venues and players will pay per swing, and that 44 US states
 | Back Nine | 100+ | Full Swing (already runs Skill Strike) |
 | Five Iron Golf | ~50 locations, 500+ bays, 7 countries | TrackMan |
 | Golfzon (US) | ~160 sites, growing 90%+ a year | Golfzon |
-| **Gyms (Virgin Active, Planet Fitness SA)** | **272 bays ordered by Get Lucky, 2027–29: the base case** | **Golfzon** |
+| **Gyms (Virgin Active, Planet Fitness SA)** | **272 bays proposed by Get Lucky, 2027–29: the base case** | **Golfzon** |
 
 ## The Golfzon base case
 
-### The order is the way in
-Get Lucky's simulator strategy puts Golfzon bays into two South African gym chains. Get Lucky buys, installs and runs the bays under 10-year concessions, and asset finance pays for 90% of them.
+### The bays are the way in
+Get Lucky's simulator strategy puts Golfzon bays into two South African gym chains. Planet Fitness meets on 2 October. Virgin Active is in discussion through its product team. Get Lucky buys, installs and runs the bays under 10-year concessions, and asset finance pays for 90% of them.
 
 | Chain | Bays | Clubs | Phasing (bays) | Hardware at list |
 |---|---:|---:|---|---:|
@@ -150,7 +150,7 @@ Get Lucky's simulator strategy puts Golfzon bays into two South African gym chai
 | Planet Fitness | 72 | 42 | 2027: 20 Signature; 2028: 40 Play; 2029: 6 Play + 6 Practice | ~$3M |
 | **Total** | **272** | **172** | | **~$11M** |
 
-That makes Get Lucky a **chain customer** for Golfzon, with a three-phase order that is not a dealer sale. It also gives Golfzon its first gym-chain reference outside Korea and the US. The outreach to Sean Pyun (CEO, Golfzon America, and Head of Global Business) already offers "the insured shot on every bay: a prize product Golfzon can take to its other operators". This report makes that offer the product.
+Once signed, that makes Get Lucky a **chain customer** for Golfzon, with a three-phase order that is not a dealer sale. It also gives Golfzon its first gym-chain reference outside Korea and the US. The outreach to Sean Pyun (CEO, Golfzon America, and Head of Global Business) already offers "the insured shot on every bay: a prize product Golfzon can take to its other operators". This report makes that offer the product.
 
 ### What each side brings
 

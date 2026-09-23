@@ -11,12 +11,13 @@ This repo is the home of the new simulator product. Right now it holds the busin
 | Business feasibility one-pager | [`docs/feasibility-onepager.md`](docs/feasibility-onepager.md) | [PDF](docs/Get-Lucky-Sim-Feasibility-Onepager.pdf) |
 | Deep research report: market, tech, integrity, legal, insurance, economics, build plan | [`docs/research-report.md`](docs/research-report.md) | [PDF](docs/Get-Lucky-Sim-Research-Report.pdf) |
 | Roadmap | [`docs/ROADMAP.md`](docs/ROADMAP.md) | |
+| **Core strategy: the deal sequence** (Golfzon → gyms → RMB → Icons → Santam → Ernie at Fancourt), with meeting briefs | [`docs/deal-strategy.md`](docs/deal-strategy.md) | [PDF](docs/Get-Lucky-Deal-Sequence.pdf) |
 
 `docs/web/` holds standalone web versions of both documents, with light and dark themes.
 
 ## The idea in one paragraph
 
-**The base case is Golfzon.** Get Lucky is ordering 272 Golfzon bays for Virgin Active (200) and Planet Fitness (72) in South Africa, in phases from 2027 to 2029. We use that order to get **Get Lucky mode** built into Golfzon's commercial software:
+**The base case is Golfzon.** Get Lucky is proposing 272 Golfzon bays for Virgin Active (200) and Planet Fitness (72) in South Africa, RMB-financed and phased from 2027 to 2029. We use that programme to get **Get Lucky mode** built into Golfzon's commercial software:
 - Golfzon renders the Collection of par-3s and sends signed shot events to our cloud.
 - Get Lucky runs the wallet, identity checks, insurance, claims and payouts, reusing the engine in [getluckyapp](https://github.com/getluckyjo/getluckyapp).
 - The gym bays prove the product.

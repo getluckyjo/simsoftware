@@ -26,6 +26,7 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..')
 const DOCS = [
   { src: 'docs/feasibility-onepager.md', out: 'docs/Get-Lucky-Sim-Feasibility-Onepager' },
   { src: 'docs/research-report.md', out: 'docs/Get-Lucky-Sim-Research-Report' },
+  { src: 'docs/deal-strategy.md', out: 'docs/Get-Lucky-Deal-Sequence' },
 ]
 const WEB_DIR = path.join(ROOT, 'docs/web')
 
@@ -245,7 +246,7 @@ article h2{font-size:${web ? '1.9em' : '19pt'};margin:${web ? '46px' : '11mm'} 0
 article h2::before{content:'';width:14px;height:14px;background:var(--lime);box-shadow:3px 3px 0 var(--green);border-radius:3px;flex:none}
 article h2:first-child{margin-top:0}
 article h3{font-size:1.08em;margin:1.3em 0 .4em;color:var(--green);break-after:avoid}
-${web ? '' : 'body{background:#fff} .wrap .tbl{background:#fff} .stats{grid-template-columns:repeat(5,1fr);gap:8px} .stat-v{font-size:1.45em;white-space:nowrap} .stat{padding:10px 11px 9px}'}
+${web ? '' : 'body{background:#fff} .wrap .tbl{background:#fff;overflow:visible} .wrap th{white-space:normal} .wrap table:has(th:nth-child(5)){font-size:.78em} .wrap table:has(th:nth-child(5)) td,.wrap table:has(th:nth-child(5)) th{padding:6px 7px} .stats{grid-template-columns:repeat(5,1fr);gap:8px} .stat-v{font-size:1.45em;white-space:nowrap} .stat{padding:10px 11px 9px}'}
 article p,article li{max-width:${web ? '70ch' : 'none'}}
 article .tbl,article .callout,article .stats{break-inside:avoid}
 article tr{break-inside:avoid}

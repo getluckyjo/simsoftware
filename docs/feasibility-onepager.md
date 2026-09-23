@@ -5,13 +5,13 @@ webTitle: Get Lucky Sim Feasibility
 kicker: Business feasibility · One-pager · Golfzon base case
 subtitle: The world's best par-3s inside Golfzon, then on every simulator. Play free, or back yourself with one insured swing to win up to <strong style="color:#d6fb4b">$100,000</strong>.
 verdictLabel: Verdict: Go, with Golfzon
-verdict: Use the 272-bay gym order to put Get Lucky mode inside Golfzon, then take it to Golfzon's 13,000 locations.
+verdict: Use the 272-bay gym programme to put Get Lucky mode inside Golfzon, then take it to Golfzon's 13,000 locations.
 footer: Get Lucky Golf · johannes@getluckygolfclub.com · Desk research and estimates. Detail in the full research report.
 date: 23 September 2026
 ---
 
 ```stats
-**272** | Golfzon bays ordered: **Virgin Active** + **Planet Fitness**, 2027–29
+**272** | Golfzon bays proposed: **Virgin Active** + **Planet Fitness**, 2027–29
 **~13,000** | Golfzon locations in 40+ countries, 100M+ rounds a year
 **~96** | paid shots per bay per month at maturity (gym bay model)
 **$100K** | top prize, insured, gated **Legend** tier
@@ -22,7 +22,7 @@ date: 23 September 2026
 Simulator golf is the fastest-growing corner of the game: a **$2B+ equipment market** with play spend on top, and 9M+ US players. **Full Swing's Skill Strike paid out $400K in its first month**, so paid shots on sims are proven. But it pays small multiples on one brand of hardware. Nobody owns **one swing at a famous hole for life-changing money**.
 
 ## The base case: Golfzon
-- **The order is the way in.** Get Lucky is buying 272 Golfzon bays for 172 gym clubs, about $11M of hardware at list. Put the software integration into the same negotiation.
+- **The bays are the way in.** Get Lucky is proposing 272 Golfzon bays for 172 gym clubs, RMB-financed, about $11M of hardware at list. The software goes into the same negotiation.
 - **Golfzon builds "Get Lucky mode"** in its software and sends signed shot events. Get Lucky runs the wallet, identity checks, insurance, claims and payouts.
 - **Golfzon covers the hard parts:** locked bays, member log-in, NASMO swing video, and data on 143,020 aces logged in 2022 for the insurer.
 - **Three stages:** SA gym bays from 2027, Golfzon US venues in 2028, the global network from 2029. Paid play where it's legal; free play and sponsor prizes elsewhere.
@@ -50,7 +50,7 @@ On each paid shot the insurer takes about 2× the expected loss, the venue 20%, 
 - **Payments.** PayFast (SA); Paysafe or Nuvei (US).
 
 ## Next 90 days
-1. **Golfzon term sheet**: Get Lucky mode, signed events, ace data and revenue share, alongside the hardware.
+1. **Golfzon (Fri 25 Sep)**: pricing, reference design, then a term sheet for Get Lucky mode, signed events, ace data and revenue share, alongside the hardware.
 2. **Santam/Indwe term sheet** for simulator aces.
 3. **SA legal opinion**, then US.
 4. Golfzon integration spec and API contract.
