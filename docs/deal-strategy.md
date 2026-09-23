@@ -173,6 +173,32 @@ The story for Santam: the SA book is the foundation, the Icons broadcast is the 
 
 > **Critical path** Icons was told in August that the R10m prize was "secured… fully underwritten". Santam received the quote request on 22 September. Until Santam quotes, that promise rests on one market. Ask Indwe to take a **parallel quote from the contingency market** as a back-up. R10m is about $540K. SCA Promotions and Lloyd's contingency syndicates write one-off prize indemnity at that size routinely. That way the Icons prize holds whatever Santam decides, and Santam keeps first right to be named on it.
 
+## Playing them off each other
+
+This is deliberate. Every party moves because another is moving. It works best when the leverage comes from **real alternatives and real deadlines**, because those hold up when someone checks.
+
+**Real alternatives to use in each room:**
+
+| Room | The alternative that creates pressure |
+|---|---|
+| Golfzon | TrackMan or Uneekor for the gym bays. Say "We're choosing the platform for 272 bays." |
+| Planet Fitness | Virgin Active, which is also in discussion. Say "We'd rather Planet Fitness had it in Sandton first." |
+| Virgin Active | Planet Fitness going first. A competitor's club gets golf before them. |
+| RMB | A second bank, or Golfzon lease finance, with the same pack. |
+| Santam | The contingency market (SCA Promotions, Lloyd's) for the R10m, and naming rights on the broadcast if they take it. |
+| Icons | The fixed date. The rig, the tracer and the cover need runway, and December doesn't move. |
+| Ernie | Momentum. Golfzon, the gyms, Santam and Icons are all in motion, and he's the name on top. |
+
+**Where framing is fine, and where it has to be exact:**
+- **Golfzon, Planet Fitness and Virgin Active are sales conversations.** "The programme", "in talks" and "being finalised" are fair framing while each of them is true.
+- **RMB, Santam and Icons are different, because they sign on what you tell them.**
+  - A credit application to RMB has to state the concessions and partners as they are on the day.
+  - A proposal form to Santam has to disclose material facts accurately. A misstatement there can void the cover, and the cover is the prize.
+  - The Icons agreement will warrant that the R10m is underwritten, so it must be bound before signing.
+
+  Overstating to these three isn't leverage, it's exposure.
+- **Keep one version of the story** (see *One story* below). All of them talk to each other in the end, and the plan only works if everything checks out at Fancourt.
+
 ## One story: what we say, to whom
 
 Every party here talks to the others:
