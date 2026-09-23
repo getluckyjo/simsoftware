@@ -28,6 +28,8 @@ const DOCS = [
   { src: 'docs/feasibility-onepager.md', out: 'docs/Get-Lucky-Sim-Feasibility-Onepager' },
   { src: 'docs/research-report.md', out: 'docs/Get-Lucky-Sim-Research-Report' },
   { src: 'docs/deal-strategy.md', out: 'docs/Get-Lucky-Deal-Sequence' },
+  { src: 'docs/golfzon-meeting-prep.md', out: 'docs/Golfzon-Meeting-Prep' },
+  { src: 'docs/golfzon-cheatsheet.md', out: 'docs/Golfzon-Cheat-Sheet' },
 ]
 const WEB_DIR = path.join(ROOT, 'docs/web')
 
