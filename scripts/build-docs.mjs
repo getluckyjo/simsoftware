@@ -32,7 +32,6 @@ const WEB_DIR = path.join(ROOT, 'docs/web')
 const b64 = f => fs.readFileSync(path.join(ROOT, f)).toString('base64')
 const FONT = b64('brand/PosterGothicRoundATF-Heavy.woff2')
 const LOCKUP = b64('brand/logo-lockup.svg')
-const CORNER = b64('brand/logo-corner.svg')
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 const slug = s => s.toLowerCase().replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
@@ -160,7 +159,7 @@ ${TOKENS}${web ? DARK : ''}${BASE}
 ${web ? '' : '@page{size:A4;margin:0} html,body{width:210mm}'}
 .sheet{${web ? 'max-width:60rem;margin:0 auto;padding-block:28px 40px;padding-inline:16px' : 'width:210mm;height:297mm;overflow:hidden;display:flex;flex-direction:column'};font-size:${web ? '15px' : '8.35pt'}}
 .hero{background:var(--green-dark);color:#ebedea;display:grid;grid-template-columns:${web ? 'auto 1fr' : '92px 1fr'};gap:${web ? '22px' : '16px'};align-items:center;
-  padding:${web ? '26px' : '11mm 13mm 8mm'};${web ? 'border-radius:18px' : ''};position:relative;overflow:hidden}
+  padding:${web ? '26px' : '10mm 13mm 7mm'};${web ? 'border-radius:18px' : 'flex:none'};position:relative;overflow:hidden}
 .hero::after{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;
   border:28px solid rgba(214,251,75,.07)}
 .hero img{width:${web ? '120px' : '92px'};display:block}
@@ -168,33 +167,32 @@ ${web ? '' : '@page{size:A4;margin:0} html,body{width:210mm}'}
 .hero .sub{color:#cfd6cb;font-size:1.08em;max-width:52ch;margin:0}
 .verdict{display:flex;gap:12px;align-items:center;margin-top:${web ? '14px' : '9px'};flex-wrap:wrap}
 .verdict span:last-child{color:#ebedea;font-weight:500;font-size:.98em}
-.content{${web ? 'margin-top:20px' : 'padding:6mm 13mm 0;flex:1'}}
+.content{${web ? 'margin-top:20px' : 'padding:6mm 13mm 0;flex:1;min-height:0;overflow:hidden'}}
 .content .stats{grid-template-columns:repeat(${web ? 'auto-fit,minmax(150px,1fr)' : '5,1fr'});margin-bottom:${web ? '18px' : '4.5mm'}}
-.content .stat-v{font-size:${web ? '1.9em' : '1.85em'}}
+.content .stat-v{font-size:${web ? '1.9em' : '1.7em'};white-space:nowrap}
+.content .stat{padding:${web ? '12px 14px 11px' : '9px 11px 8px'}}
 .cols{${web ? 'columns:2 22rem;column-gap:28px' : 'columns:2;column-gap:7mm'}}
 .cols h2{font-size:${web ? '1.35em' : '1.42em'};margin:0 0 4px;padding-top:2px;break-after:avoid;display:flex;gap:7px;align-items:center}
 .cols h2::before{content:'';width:10px;height:10px;background:var(--lime);box-shadow:2px 2px 0 var(--green);border-radius:2px;flex:none}
-.cols section{break-inside:avoid;margin-bottom:${web ? '18px' : '3.4mm'}}
+.cols section{break-inside:avoid;margin-bottom:${web ? '18px' : '2.6mm'}}
 .cols p,.cols li{color:var(--ink)}
 .cols ul{margin-bottom:.3em}
 .cols .tbl{margin:.2em 0 .4em}
 .cols table{font-size:.93em}
 .cols th{padding:4px 7px}.cols td{padding:3px 7px}
-.foot{${web ? 'margin-top:12px;border-radius:14px' : 'margin:0 13mm 9mm'};background:var(--green);color:#ebedea;padding:${web ? '14px 18px' : '8px 12px'};
-  display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:.9em;flex-wrap:wrap;${web ? '' : 'border-radius:10px'}}
+.foot{${web ? 'margin-top:12px;border-radius:14px' : 'margin:0 13mm 8mm'};background:var(--green);color:#ebedea;padding:${web ? '14px 18px' : '8px 12px'};
+  display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:.9em;flex-wrap:wrap;${web ? '' : 'border-radius:10px;flex:none'}}
 .foot b{color:var(--lime);font-weight:600}
 @media (max-width:560px){.hero{grid-template-columns:1fr}.hero img{width:96px}}
 `
   // Group each h2 + following nodes into a <section> so columns never split them.
   const grouped = html.replace(/(<h2[\s\S]*?)(?=<h2|$)/g, '<section>$1</section>')
-  const statsMatch = grouped.match(/^\s*<div class="stats">[\s\S]*?<\/div><\/div>\s*<\/div>/)
   let stats = '', rest = grouped
   const si = grouped.indexOf('<div class="stats">')
   if (si !== -1 && si < grouped.indexOf('<section>')) {
     const end = grouped.indexOf('<section>')
     stats = grouped.slice(si, end); rest = grouped.slice(0, si) + grouped.slice(end)
   }
-  void statsMatch
   return page(meta, css, `
 <main class="sheet">
   <header class="hero">
@@ -242,12 +240,12 @@ body{${web ? 'font-size:16px' : ''}}
 .toc li{counter-increment:t;display:flex;gap:10px;padding:${web ? '5px' : '7px'} 0;border-bottom:1px solid var(--line);break-inside:avoid;margin:0}
 .toc li::before{content:counter(t,decimal-leading-zero);font-family:var(--mono);color:var(--green-mid);font-size:.9em;min-width:1.6em}
 .toc a{text-decoration:none;font-weight:500}
-article h2{font-size:${web ? '1.9em' : '19pt'};margin:${web ? '46px' : '0'} 0 12px;padding-top:${web ? '0' : '2mm'};
-  display:flex;gap:10px;align-items:center;${web ? '' : 'break-before:page;'}break-after:avoid}
+article h2{font-size:${web ? '1.9em' : '19pt'};margin:${web ? '46px' : '11mm'} 0 12px;
+  display:flex;gap:10px;align-items:center;break-after:avoid}
 article h2::before{content:'';width:14px;height:14px;background:var(--lime);box-shadow:3px 3px 0 var(--green);border-radius:3px;flex:none}
 article h2:first-child{margin-top:0}
 article h3{font-size:1.08em;margin:1.3em 0 .4em;color:var(--green);break-after:avoid}
-${web ? '' : ':root[data-x]{} article h3{color:var(--green)}'}
+${web ? '' : 'body{background:#fff} .wrap .tbl{background:#fff} .stats{grid-template-columns:repeat(5,1fr);gap:8px} .stat-v{font-size:1.45em;white-space:nowrap} .stat{padding:10px 11px 9px}'}
 article p,article li{max-width:${web ? '70ch' : 'none'}}
 article .tbl,article .callout,article .stats{break-inside:avoid}
 article tr{break-inside:avoid}
@@ -306,7 +304,7 @@ for (const d of DOCS) {
       const s = document.querySelector('.content')
       return s.scrollHeight - s.clientHeight
     })
-    if (over > 0) { await browser.close(); fs.unlinkSync(tmp); throw new Error(`${d.src}: one-pager overflows A4 by ${over}px — cut copy`) }
+    if (over > 0) { await browser.close(); if (!process.env.KEEP_PRINT_HTML) fs.unlinkSync(tmp); throw new Error(`${d.src}: one-pager overflows A4 by ${over}px — cut copy`) }
     await p.pdf({ path: path.join(ROOT, d.out + '.pdf'), format: 'A4', printBackground: true, pageRanges: '1' })
   } else {
     await p.pdf({
@@ -317,7 +315,7 @@ for (const d of DOCS) {
     })
   }
   await p.close()
-  fs.unlinkSync(tmp)
+  if (!process.env.KEEP_PRINT_HTML) fs.unlinkSync(tmp)
   console.log(`✓ ${d.out}.pdf  +  docs/web/${path.basename(webPath)}`)
 }
 await browser.close()

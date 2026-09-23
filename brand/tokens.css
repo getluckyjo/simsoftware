@@ -1,0 +1,41 @@
+/*
+ * Get Lucky — V2 brand tokens for Sim Software.
+ * Source of truth: getluckyjo/getluckyapp src/app/globals.css (V2 app look).
+ * Rules carried over from the app:
+ *   - Lime is the accent: every primary CTA, chips, the Play disc.
+ *   - Gold is the prize colour and only sits on dark green (fails contrast on light).
+ *   - Headings: Poster Gothic Round ATF Heavy, uppercase. Body: Inter. Numerals: Space Mono.
+ *   - Primary buttons: lime fill, green label, hard offset shadow 4px 5px 0 var(--green).
+ */
+@font-face {
+  font-family: 'Poster Gothic';
+  src: url('./PosterGothicRoundATF-Heavy.woff2') format('woff2');
+  font-weight: 800;
+  font-display: block;
+}
+
+:root {
+  --green: #345231;       /* brand green — type, icons, chips, button shadows */
+  --green-dark: #1e3120;  /* hero panels, stat tiles */
+  --green-mid: #4a7a3d;
+  --app-black: #0d160f;
+  --lime: #d6fb4b;        /* the accent */
+  --lime-dark: #c2e83a;
+  --surface: #ebedea;     /* light screen background */
+  --bar-off: #bfc6bb;
+  --logo-cream: #f5eede;  /* logo lockups only */
+  --gold: #c9a94e;        /* prize figures, on dark green only */
+  --gold-light: #e8d48b;
+  --white: #ffffff;
+  --black: #1a1a1a;
+  --red: #e40014;
+
+  --font-heading: 'Poster Gothic', Impact, 'Arial Black', sans-serif;
+  --font-body: Inter, system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+
+  --radius-sm: 6px;   /* buttons */
+  --radius-md: 12px;  /* cards */
+  --radius-lg: 20px;
+  --shadow-cta: 4px 5px 0 var(--green);
+}
