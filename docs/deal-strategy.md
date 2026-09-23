@@ -12,7 +12,7 @@ metaRows: Owner=Johannes Le Roux;Date=23 September 2026;Next meetings=Golfzon Fr
 
 ## The strategy
 
-Every conversation from now to December is one move in the same sequence. Each party is sold on what the others bring, so each yes becomes the proof for the next conversation.
+This is the phase-0 playbook of the **Master Strategy** (the full plan to 2030). Every conversation from now to December is one move in the same sequence. Each party is sold on what the others bring, so each yes becomes the proof for the next conversation.
 
 1. **Golfzon. Sell the bays to get the partnership.** A 272-bay programme in Virgin Active and Planet Fitness gets us in the room with Golfzon's global head. We leave with chain pricing, a reference design and an agreement to talk about Get Lucky mode inside Golfzon's software.
 2. **Planet Fitness (and Virgin Active). Sell the concept.** Golf zones at zero capex, financed by RMB, run by Get Lucky, and backed by Ernie Els.

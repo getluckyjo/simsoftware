@@ -24,6 +24,7 @@ import { chromium } from 'playwright'
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..')
 const DOCS = [
+  { src: 'docs/master-strategy.md', out: 'docs/Get-Lucky-Master-Strategy' },
   { src: 'docs/feasibility-onepager.md', out: 'docs/Get-Lucky-Sim-Feasibility-Onepager' },
   { src: 'docs/research-report.md', out: 'docs/Get-Lucky-Sim-Research-Report' },
   { src: 'docs/deal-strategy.md', out: 'docs/Get-Lucky-Deal-Sequence' },

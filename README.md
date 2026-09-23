@@ -8,6 +8,7 @@ This repo is the home of the new simulator product. Right now it holds the busin
 
 | Document | Source | PDF |
 |---|---|---|
+| **Master strategy: the full plan 2026–2030** (three engines, one insurance book, one launch) | [`docs/master-strategy.md`](docs/master-strategy.md) | [PDF](docs/Get-Lucky-Master-Strategy.pdf) |
 | Business feasibility one-pager | [`docs/feasibility-onepager.md`](docs/feasibility-onepager.md) | [PDF](docs/Get-Lucky-Sim-Feasibility-Onepager.pdf) |
 | Deep research report: market, tech, integrity, legal, insurance, economics, build plan | [`docs/research-report.md`](docs/research-report.md) | [PDF](docs/Get-Lucky-Sim-Research-Report.pdf) |
 | Roadmap | [`docs/ROADMAP.md`](docs/ROADMAP.md) | |
