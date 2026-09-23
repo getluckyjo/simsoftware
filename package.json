@@ -1,0 +1,14 @@
+{
+  "name": "get-lucky-sim",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Get Lucky Hole-in-One Simulator Software",
+  "type": "module",
+  "scripts": {
+    "docs": "node scripts/build-docs.mjs"
+  },
+  "devDependencies": {
+    "marked": "^16.0.0",
+    "playwright": "1.56.1"
+  }
+}
