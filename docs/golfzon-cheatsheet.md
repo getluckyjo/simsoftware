@@ -33,6 +33,11 @@ date: 25 September 2026
 
 Then lock: **Chantilly in October** and the **PGA Show, 26–29 Jan**.
 
+## Openings
+- **Ace prizes:** Korea has a ₩30M pool and insurance; **the US gets gift cards**. We bring the insured big prize overseas, where his growth is.
+- **Golf Genius** already runs a layer on Golfzon, so Get Lucky mode is the same model.
+- **Tour Season 3:** 14 countries, **no African host**.
+
 ## Lines to hold
 - **Virgin Active:** "Proposal goes to VA's product team this quarter; Planet Fitness sits down with us next Friday. Both need your price to say yes."
 - **Ernie:** "Advanced talks, nothing signed. He captains Team SA at Fancourt."
@@ -40,6 +45,7 @@ Then lock: **Chantilly in October** and the **PGA Show, 26–29 Jan**.
 - **Revenue share:** "We want Golfzon earning on every shot. Scope first, then we set the number together." *Don't anchor.*
 - **Gambling:** "An insured prize contract, not a bet. We carry the compliance, and paid play runs only where permitted."
 - **TrackMan:** "We're choosing now, and we'd rather one platform, Golfzon's, across the chain."
+- **"Africa isn't my remit":** "SA is the proof site. The global part is Get Lucky mode on your US, EU and ME bays."
 
 ## The numbers
 | Bay | Unit | List | Qty |

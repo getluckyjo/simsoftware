@@ -39,27 +39,63 @@ metaRows: Meeting=Fri 25 Sep 2026;With=Sean Pyun, Golfzon America;From Get Lucky
 ## Who you're meeting
 
 **Sean Pyun: President and CEO, Golfzon America, and Head of Global Business.**
-- Golfzon moved its Global Business Division to Chantilly, Virginia in March 2026, under him. International deals, Africa included, now go through him rather than Seoul.
-- He spent 16 years at the LPGA, the last role as Chief Business Officer of LPGA Asia. He brought Golfzon on as an LPGA sponsor.
+- He has been CEO of Golfzon America since January 2024. In March 2026 Golfzon moved its Global Business Division from Korea to Chantilly, Virginia, with Pyun as Head of Global Business. The product team is moving to the US for the first time.
+- **His remit is North America, Europe, the Middle East and select SE Asian markets. Africa isn't named.**
+- He was born in Seoul and moved to the US at 14. He spent 16 years at the LPGA, rising from intern to Chief Business Officer, Asia, and closed title sponsorships in seven countries.
 - He thinks in tours, leagues and brand partnerships. His record is partnerships with operators rather than one-off sales:
-  - Arcis Golf (courses scanned into the simulator);
-  - NGCOA and SCPGA;
-  - Golf Genius (leagues);
+  - Arcis Golf (10 courses scanned into the simulator);
+  - NGCOA and PGA sections;
+  - Golf Genius (leagues and Tour);
+  - USGA, Pebble Beach and Pinehurst;
   - the Miami Dolphins;
-  - Pebble Beach;
-  - Leadbetter coaching content.
+  - Leadbetter (owned by Golfzon since 2018).
 - **Spelling: Sean Pyun.** Not "Shaun Payn". Check the invite, your notes and every follow-up.
 
 **Others who may join:**
-- Aaron Flink, EVP and Chief Strategy Officer (fronted the Pebble Beach partnership).
-- Taylor Frampton, Director of Marketing Strategy.
 - Stephanie Krasner, Director of Business Development.
+- Taylor Frampton, Director of Marketing.
+- Dean Schneider, Director of GOLFZON Competitions (the Tour).
 
-If strategy or business development joins, that's a good sign: it means they're qualifying a chain deal.
+These titles come from LinkedIn and trade releases. If business development joins, that's a good sign: it means they're qualifying a chain deal.
+
+**Note:** Aaron Flink works for **Pebble Beach**, not Golfzon. He is Pebble's EVP and Chief Strategy Officer and the voice on the Golfzon–Pebble deal. The outreach contact list had this wrong.
 
 **Time zones:** Cape Town is 6 hours ahead of Virginia. A 10:00 call in Virginia is 16:00 in Cape Town.
 
-<!-- LATEST -->
+## What's new at Golfzon (as of 23 September)
+
+**The business pressure: this is why he needs you.**
+- Golfzon's Korean business is shrinking. FY2025 revenue fell **22%** to about $345M, and operating profit fell 29%.
+- Q2 2026 operating profit fell **66.5%**. Korean installs grew only 0.5%, and Korean screen rounds fell about 5%.
+- **Overseas is the growth story.** It reached 22.8% of revenue for the first time, growing 26%, driven by US demand for TwoVision NX. Analysts expect about 27% in 2026.
+- Overseas stores: Japan 1,290, China 1,260, **US 930**, Vietnam 80, and others 450.
+
+**What that means for Friday:** Pyun's unit carries the group's growth. **More revenue from bays already sold** is exactly his problem, and Get Lucky mode answers it. Frame it that way. Don't mention Korea's decline to him.
+
+**What he's focused on right now:**
+- **GOLFZON Tour Season 3** is live during your meeting: individual qualifying runs until 30 Sep, and team qualifying is in October.
+  - 127 facilities in 14 countries, $300K in prizes, run through Golf Genius.
+  - There are hosts in the UK, Riyadh (Five Iron) and Dubai, and **none in Africa**. A Southern African leg is an open door.
+- **Brand partnerships:**
+  - USGA: official simulator of the U.S. Open, *with on-site prize games for fans*.
+  - Pebble Beach: a Golfzon Lounge at Spanish Bay from 2027, and "Road to Pebble Beach".
+  - Pinehurst: "Road to Pinehurst".
+  - The Miami Dolphins, NGCOA, and PGA sections (SCPGA, NorCal, Georgia).
+- **CityGolf Nashville:** 175,000 sq ft, opening late 2026, with 10–15 US sites planned by 2030.
+- **The GOLFZON Global App relaunch** (July): booking, Network Play rooms and **"community challenges"**. Get Lucky mode could sit naturally there.
+- **What he says, in his words:**
+  - Network Play is his favourite technology.
+  - "Our biggest competitive advantage is our product."
+  - Golfzon "helps operators drive new revenue streams year-round".
+  - Indoor golf will be the first swing for 90% of new golfers.
+  - His vision is indoor golf as an Olympic sport.
+
+**The openings to use:**
+1. **Golfzon already runs hole-in-one prizes, but only in Korea.** G-Membership aces split a ₩30M pool (about $21K), and field hole-in-one insurance is bundled into the membership. Korean insurers (Hanwha, NH NongHyup) pay out on Golfzon aces. **In the US, its ace prizes are gift cards and prize draws.** No insured, big-prize programme exists there. That is the gap you fill.
+2. **Golfzon already lets a partner run a layer on its system.** Golf Genius runs registration, scoring and standings for the leagues and the Tour, with Golfzon Global ID logins verifying scores. Golfzon keeps the simulator and the data. **Get Lucky mode is the same model:** Get Lucky runs the prize, insurance and payout layer.
+3. **Gyms.** Golfzon markets to gyms and fitness centres but has **no named gym-chain deal**. Virgin Active and Planet Fitness would be the first.
+4. **Africa isn't in his stated remit** (North America, Europe, the Middle East, select SE Asia). The only 2026 Africa activity is a simulator donated to the Dakar Youth Olympic Games. The SA distributor, iPlanet Golf, appointed in 2016, looks dormant. **Present South Africa as the proof site for a global product, not as a market he has to go and build.**
+
 
 ## What Golfzon wants, and what we give
 
@@ -82,7 +118,7 @@ For comparison, commercial Golfzon venues pay about $2–4K per bay per year for
 
 | Min | Segment | What you're doing |
 |---|---|---|
-| 0–3 | Warm open | Thank him for the time. The Golfzon Global Business move to Chantilly: congratulate it and say that's why you came to him and not a dealer. The LPGA connection if natural |
+| 0–3 | Warm open | Thank him for the time. Mention Tour Season 3 (127 facilities, 14 countries, qualifying live now) and Pinehurst. The move to Chantilly is why you came to him and not a dealer |
 | 3–8 | **The bays (why you got the meeting)** | Virgin Active 200 + Planet Fitness 72 = **272 bays**, 2027–29, financed with RMB, operated by us. "We're choosing the platform now, and we want it to be Golfzon." |
 | 8–14 | **Listen** | Discovery questions (below). Let him talk about chain deals, gyms and what he needs to quote |
 | 14–24 | **The turn: "Ask us in Virginia"** | The software. The insured hole-in-one as a Golfzon product: Get Lucky mode, signed shot events, our wallet, insurance, claims and payouts. Korea already does ace pools, and we take it everywhere else, with big insured prizes |
@@ -172,7 +208,8 @@ Service is modelled at 4% of hardware a year, about **$417K a year** to Golfzon 
 - Santam carries the risk, placed by Indwe.
 
 **Golfzon's own numbers** (show you know them):
-- About 13,000 locations in 40+ countries, 6M+ members, 100M+ rounds a year.
+- About 13,000 locations in 40+ countries, 6M+ members, 100M+ rounds a year. Overseas stores: 4,010, including 930 in the US.
+- Overseas revenue was 22.8% of the total in FY2025, up 26%.
 - 143,020 aces logged in 2022, about 1 in 7,000 par-3 shots.
 - The US business grew 90%+ in 2025.
 
@@ -183,10 +220,11 @@ Ask these early, and listen for the chain-deal mechanics:
 2. "What do you need from us to put a price and reference design on the table?"
 3. "Who in Southern Africa would you trust to install and service 172 clubs?"
 4. "Does Golfzon have a leasing or vendor-finance programme we should put next to RMB?"
-5. "How did the Golf Genius integration work? Who owns third-party integrations in your software?"
-6. "Your hole-in-one challenge in Korea: how do you verify aces, and have you ever insured the prizes?"
-7. "Where do you see the gym vertical going for Golfzon globally?"
-8. "What would make this a reference account you'd want to show at the PGA Show?"
+5. "Golf Genius runs the competition layer on your system. Who owns partner integrations like that, and how did you scope it?"
+6. "Your G-Membership hole-in-one challenge in Korea: how do you verify aces, and would you share the ace rates for pricing? Why hasn't it come to the US?"
+7. "Would a Southern African leg of Tour Season 4 be interesting? We could host it on the gym bays."
+8. "Where do you see the gym vertical going for Golfzon globally?"
+9. "What would make this a reference account you'd want to show at the PGA Show?"
 
 ## Hard questions, and your answers
 
@@ -200,6 +238,8 @@ Ask these early, and listen for the chain-deal mechanics:
 | "Why would we open our software to a third party?" | "It's a mode and an event feed, not access to your core. You've done integrations like it before (Golf Genius). It adds a new paid moment to bays you've already sold, and Golfzon earns on every shot." |
 | "What revenue share are you thinking?" | "We'd like Golfzon to earn on every paid shot, and we'd rather scope the mode first and then put a number on it together. There's also the hardware on our side of the table." *(Don't anchor. Planning figure: 15%.)* |
 | "Do you want exclusivity?" | "We'd like Golfzon as the standard on every bay we run, and Get Lucky as Golfzon's insured-prize partner in the markets we open. Let's define that after scoping." |
+| **"Africa isn't in my remit."** | "That's why South Africa is the proof site, not the ask. The global part is Get Lucky mode on your bays in the US, Europe and the Middle East. South Africa gives you the first gym-chain reference and the first insured-prize programme outside Korea, with the numbers coming from your own telemetry. And the Tour has no African host yet." |
+| "We already do ace prizes." | "In Korea, with a pool and insurance in the membership. In the US it's gift cards. We bring the big insured prize, the payouts and the compliance to your overseas bays, which is where your growth is." |
 | "Can you really hit 2027?" | "Signature bays in the flagship clubs in 2027 is the plan. Pricing in October, the chain LOI, then RMB. We're working to confirm the phase-one order at the PGA Show in January." |
 | "What about Ernie?" | "Advanced talks, nothing signed, as the brief said. He captains Team South Africa at Fancourt in December." |
 

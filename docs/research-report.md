@@ -180,7 +180,7 @@ Once signed, that makes Get Lucky a **chain customer** for Golfzon, with a three
 | Stage | When | Where | Mode |
 |---|---|---|---|
 | **1. Gym bays (SA)** | 2027–29 | 272 bays at Virgin Active and Planet Fitness | Paid ZAR ladder + free play. The live reference. |
-| **2. Golfzon US and UK venues** | 2028–29 | Golfzon US (~160 sites) and Golfzon Social; UK/Europe after legal opinions | Paid USD/GBP ladder in permitted states and markets |
+| **2. Golfzon US and UK venues** | 2028–29 | Golfzon US (930 stores in Golfzon's FY2025 reporting) and Golfzon Social; UK/Europe after legal opinions | Paid USD/GBP ladder in permitted states and markets |
 | **3. Golfzon global** | 2029+ | Golfzon's ~13,000 locations in 40+ countries | Paid where permitted; **free play with sponsor prizes** in Korea, Japan and other restricted markets |
 
 ### What the gym bays produce (from the existing bay model, base case)
