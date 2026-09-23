@@ -2,29 +2,34 @@
 layout: onepager
 title: Hole-in-One Simulator Software
 webTitle: Get Lucky Sim Feasibility
-kicker: Business feasibility · One-pager
-subtitle: The world's best par-3s, on any golf simulator. Play free, or back yourself with one insured swing to win up to <strong style="color:#d6fb4b">$100,000</strong>.
-verdictLabel: Verdict: Go, in stages
-verdict: Build it. Launch free play worldwide, then paid shots at certified venues in SA and the US.
+kicker: Business feasibility · One-pager · Golfzon base case
+subtitle: The world's best par-3s inside Golfzon, then on every simulator. Play free, or back yourself with one insured swing to win up to <strong style="color:#d6fb4b">$100,000</strong>.
+verdictLabel: Verdict: Go, with Golfzon
+verdict: Use the 272-bay gym order to put Get Lucky mode inside Golfzon, then take it to Golfzon's 13,000 locations.
 footer: Get Lucky Golf · johannes@getluckygolfclub.com · Desk research and estimates. Detail in the full research report.
 date: 23 September 2026
 ---
 
 ```stats
-**9M+** | US simulator players; **51%** aren't on-course golfers
-**100M+** | rounds a year on Golfzon alone, 13,000 sites
+**272** | Golfzon bays ordered: **Virgin Active** + **Planet Fitness**, 2027–29
+**~13,000** | Golfzon locations in 40+ countries, 100M+ rounds a year
+**~96** | paid shots per bay per month at maturity (gym bay model)
 **$100K** | top prize, insured, gated **Legend** tier
-**~45%** | blended margin per paid shot, base case
-**$0.9–1.3M** | 12-month MVP, SA-led team of 9
+**$0.8–1.2M** | first-year build, SA-led team of 8
 ```
 
 ## The opportunity
-Simulator golf is the fastest-growing corner of the game: a **$2B+ equipment market** growing about 9% a year, with play spend on top. Paid shots on sims are already proven, and **Full Swing's Skill Strike paid out $400K in its first month**. But it pays small multiples, and only on Full Swing hardware. Nobody owns **one swing at a famous hole for life-changing money, on any simulator**.
+Simulator golf is the fastest-growing corner of the game: a **$2B+ equipment market** with play spend on top, and 9M+ US players. **Full Swing's Skill Strike paid out $400K in its first month**, so paid shots on sims are proven. But it pays small multiples on one brand of hardware. Nobody owns **one swing at a famous hole for life-changing money**.
 
-## The product
-- **The Collection:** 8–12 par-3s inspired by famous holes, rotating and sponsor-named. They run in a light Unity app that plugs into any launch monitor.
-- **Free play everywhere:** leaderboards and closest-to-the-pin. Free play also collects the ace-rate data insurers price on.
-- **Paid, insured shots:** our server decides every result on our own physics, with cameras, a witness and ID checks. It uses the Get Lucky app's existing claims engine.
+## The base case: Golfzon
+- **The order is the way in.** Get Lucky is buying 272 Golfzon bays for 172 gym clubs, about $11M of hardware at list. Put the software integration into the same negotiation.
+- **Golfzon builds "Get Lucky mode"** in its software and sends signed shot events. Get Lucky runs the wallet, identity checks, insurance, claims and payouts.
+- **Golfzon covers the hard parts:** locked bays, member log-in, NASMO swing video, and data on 143,020 aces logged in 2022 for the insurer.
+- **Three stages:** SA gym bays from 2027, Golfzon US venues in 2028, the global network from 2029. Paid play where it's legal; free play and sponsor prizes elsewhere.
+
+## What it takes
+- **Team and cost:** 8 people, **$0.8–1.2M** in year one, including legal opinions and insurance set-up.
+- **Timeline:** Golfzon deal in Q4 2026, build in H1 2027, live on the first 60 gym bays mid-2027.
 
 ## How it makes money
 | Tier | Entry | Prize | Tee |
@@ -35,26 +40,17 @@ Simulator golf is the fastest-growing corner of the game: a **$2B+ equipment mar
 | Major | $50 | $35,000 | 180–195 yds |
 | **Legend** | **$100** | **$100,000** | 195–210 yds |
 
-On each paid shot the insurer takes about 2× the expected loss, the venue 20%, and fees and ID checks about 5%. **About 45% is left for Get Lucky**, assuming 1 ace per 8,000 shots. Venue licences, sponsor-named holes and corporate shoot-outs add to that. **Base case: 2,500 bays by year 3, about $16M revenue and $8M contribution**, from fewer than 3 paid shots per bay per day.
-
-## Why Get Lucky wins
-- **A live, insured product.** Up to R1m prizes backed by Santam and Indwe, with the claims, evidence and risk engine already built.
-- **A channel.** The simulator strategy has 270+ gym bays in play with Virgin Active and Planet Fitness, plus Golfzon.
-- **A brand made for the moment.** *Back yourself on any par-3.*
+On each paid shot the insurer takes about 2× the expected loss, the venue 20%, Golfzon about 15% (to negotiate) and fees about 5%. **About 30% is left for Get Lucky**, assuming 1 ace per 8,000 shots. **Base case: 2,500 bays by 2029, about $16M revenue and $6M contribution.**
 
 ## Top risks and how we handle them
-- **Fake shots.** Simulator data can be spoofed. The server decides every result, and paid play starts at certified venues with cameras and a witness.
-- **Aces happen more often than priced.** Simulators run about 1 in 7,000 shots. Prizes scale with distance, attempts are capped, and our own data sets the price.
-- **Treated as gambling.** Paid play only where a legal opinion says it's a skill contest: SA and about 38 US states. Everywhere else is free.
-- **Closed platforms.** TrackMan, Golfzon and Foresight need partner deals; open monitors work day one.
-- **Payments.** Stripe restricts skill games. Use PayFast (SA) and Paysafe or Nuvei (US).
-
-## What it takes
-- **Team and cost:** 9 people for 12 months, **$0.9–1.3M** all-in, including legal opinions and insurance set-up.
-- **Timeline:** legal, insurance and partners in months 0–3. Free play live by month 7, paid shots in SA by month 10, US venues by month 12.
+- **Golfzon says no.** It's negotiated inside the hardware order. The fallback is our own app on TrackMan or Uneekor.
+- **Fake shots.** Signed Golfzon events, swing video, ID checks and a witness on big prizes.
+- **Aces happen more often than priced.** Prizes scale with distance, attempts are capped, and Golfzon's data sets the price.
+- **Treated as gambling.** Paid play only where a legal opinion says it's a skill contest: SA and about 38 US states. Korea and Japan get free play.
+- **Payments.** PayFast (SA); Paysafe or Nuvei (US).
 
 ## Next 90 days
-1. **Santam/Indwe term sheet** for simulator aces, plus a Lloyd's broker for USD cover.
-2. **SA and US legal opinions.**
-3. **TrackMan, Uneekor and Golfzon** talks on signed shot data.
-4. Greybox three holes; start logging free-play aces.
+1. **Golfzon term sheet**: Get Lucky mode, signed events, ace data and revenue share, alongside the hardware.
+2. **Santam/Indwe term sheet** for simulator aces.
+3. **SA legal opinion**, then US.
+4. Golfzon integration spec and API contract.

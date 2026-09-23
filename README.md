@@ -16,7 +16,13 @@ This repo is the home of the new simulator product. Right now it holds the busin
 
 ## The idea in one paragraph
 
-Get Lucky Sim is a lightweight Unity app plus a cloud platform, and it plugs into the golfer's launch monitor. It hosts a rotating Collection of famous-inspired par-3s. Free play runs everywhere. Paid, insured shots are adjudicated on our own servers with our own physics. They are verified with cameras, a witness and ID checks, and they launch first at certified venues in South Africa and in the US states where paid skill contests are allowed. It reuses the claims, evidence and risk engine already running in [getluckyapp](https://github.com/getluckyjo/getluckyapp). It extends the gym-bay channel in [simulatorstrategy](https://github.com/getluckyjo/simulatorstrategy).
+**The base case is Golfzon.** Get Lucky is ordering 272 Golfzon bays for Virgin Active (200) and Planet Fitness (72) in South Africa, in phases from 2027 to 2029. We use that order to get **Get Lucky mode** built into Golfzon's commercial software:
+- Golfzon renders the Collection of par-3s and sends signed shot events to our cloud.
+- Get Lucky runs the wallet, identity checks, insurance, claims and payouts, reusing the engine in [getluckyapp](https://github.com/getluckyjo/getluckyapp).
+- The gym bays prove the product.
+- Golfzon then takes it to its ~13,000 locations worldwide. Paid, insured shots run where legal; free play and sponsor prizes run everywhere else.
+
+A lightweight Unity adjudicator follows later for other hardware (TrackMan, Uneekor) and is the fallback if the Golfzon terms don't land. The channel plan and bay economics live in [simulatorstrategy](https://github.com/getluckyjo/simulatorstrategy).
 
 ## Building the documents
 

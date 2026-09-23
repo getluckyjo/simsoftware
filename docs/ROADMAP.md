@@ -1,44 +1,44 @@
 # Get Lucky Sim — Roadmap
 
-The phases come from the [research report](research-report.md), section *Team, budget & roadmap*. Dates count from kick-off.
+**Base case:** the Golfzon order for Virgin Active and Planet Fitness is the way into Golfzon's software worldwide. The phases come from the [research report](research-report.md), sections *The Golfzon base case* and *Team, budget & roadmap*.
 
-## Phase 0: Foundations (months 0–3)
-- [ ] Insurer term sheet for simulator aces: Santam/Indwe for SA, plus a Lloyd's broker for USD cover
-- [ ] Written legal opinions:
-  - [ ] South Africa: National Gambling Act and Consumer Protection Act, plus a comfort letter from the provincial board
-  - [ ] USA: 50-state skill-contest memo and opinion letter
-- [ ] Partner talks on signed shot data: TrackMan, Uneekor, Foresight, and Golfzon for the gym-bay channel
-- [ ] Physics specification: flight, bounce, roll, flagstick and cup capture. Versioned and deterministic.
-- [ ] Greybox the first 3 holes
+## Phase 0: The Golfzon deal (Q4 2026)
+- [ ] Golfzon term sheet covering more than the hardware:
+  - [ ] Get Lucky mode inside Golfzon's software (TwoVision / Vision / GDR)
+  - [ ] Signed server-to-server shot events: armed, launch data, result, NASMO video
+  - [ ] Ace-rate history by hole, distance and handicap, shared under NDA with our insurer
+  - [ ] Bay counts by country, to size the markets where paid play is permitted
+  - [ ] Revenue share (plan on 15%) and exclusivity in agreed markets
+  - [ ] Collection holes and Get Lucky's partner courses in Golfzon's library
+- [ ] Santam/Indwe term sheet for simulator aces
+- [ ] South African legal opinion (National Gambling Act and Consumer Protection Act) plus a comfort letter from the provincial board
+- [ ] Integration spec and API contract, Get Lucky's first engineering deliverable
 
-## Phase 1: Free play (months 3–7)
-- [ ] Unity Windows client with an Open Connect listener on a configurable port
-- [ ] 6 holes in the Collection
-- [ ] Accounts, leaderboards, closest-to-the-pin, daily challenges
-- [ ] Shot telemetry pipeline, so actuarial data collection starts on day one
-- [ ] Free global launch
+## Phase 1: Build (H1 2027)
+- [ ] Cloud platform: wallet, double-entry ledger, KYC, verification, claims, payouts (extends the getluckyapp claim engine)
+- [ ] Golfzon event ingestion: signature checks, idempotency, append-only store
+- [ ] Bay link by QR, mapping the Golfzon member to the Get Lucky account
+- [ ] First 6 Collection holes in Golfzon format
+- [ ] Venue console for gym staff: witness sign-off, bay health, revenue-share reporting
 
-## Phase 2: Certified venues in South Africa (months 7–10)
-- [ ] Adjudication service: nonce-armed attempts, hidden per-attempt seed, server-side outcome
-- [ ] Double-entry ledger, PayFast/Peach checkout, ZAR ladder
-- [ ] Bay cameras, evidence store with write-once lock, claims workflow (extends the getluckyapp claim states)
-- [ ] Venue console: bay registration, staff witness sign-off, revenue-share reporting
-- [ ] Pilot at 10–20 SA bays
+## Phase 2: Gym bays live (mid-2027)
+- [ ] Paid ZAR ladder on the first 60 Signature bays (40 Virgin Active, 20 Planet Fitness)
+- [ ] Free play and leaderboards on every bay
+- [ ] Monthly ace-rate and loss-ratio review with the insurer
 
-## Phase 3: US venues (months 10–12)
-- [ ] USD ladder, $5 → $100K (Legend gated)
-- [ ] Paysafe/Nuvei, MCC 7994 registration, geolocation, state block list
-- [ ] KYC at payout, W-9 / 1099-MISC flow
-- [ ] Live remote proctoring for Legend
-- [ ] Pilot venues in dominant-factor states
+## Phase 3: Scale SA + Golfzon US (2028)
+- [ ] 200 gym bays live
+- [ ] US 50-state opinion; Paysafe/Nuvei; MCC 7994 registration; geolocation; 1099 flow
+- [ ] Paid USD ladder at Golfzon US venues in permitted states
+- [ ] Free play with sponsor prizes across Golfzon's global network
 
-## Phase 4: Home paid and partners (year 2)
-- [ ] Attested phone-video tier for home simulators (low limits)
-- [ ] TrackMan / partner-hosted challenge
-- [ ] UK counsel opinion, then UK launch
-- [ ] Sponsor-named holes at scale
+## Phase 4: Golfzon global (2029)
+- [ ] All 272 gym bays live
+- [ ] UK/EU after legal opinions
+- [ ] Golfzon offers Get Lucky mode to its operators worldwide
+- [ ] $100K Legend tier on certified bays with a live remote proctor
 
-## Phase 5: Global (years 2–3)
-- [ ] Malta route for the EU
-- [ ] Collection grows past 25 holes, with localisation
+## Phase 5: Beyond Golfzon (2029+)
+- [ ] Unity adjudicator for TrackMan, Uneekor and Foresight venues
+- [ ] Home-simulator tier (attested phone video, low limits)
 - [ ] Self-insure the lower tiers, with stop-loss reinsurance

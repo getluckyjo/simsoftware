@@ -4,10 +4,10 @@ title: Hole-in-One Simulator Software
 webTitle: Get Lucky Sim Research
 short: Deep research report
 kicker: Get Lucky Golf · Deep research
-subtitle: Everything we need to know to build it: the market, the tech, shot integrity, the law, insurance, the money and the build plan for a global hole-in-one game that runs on any golf simulator.
-verdictLabel: Feasible. Build it in stages.
+subtitle: Everything we need to know to build it, with the Golfzon order for Virgin Active and Planet Fitness as the base case for going global inside Golfzon's software.
+verdictLabel: Feasible. Build it with Golfzon.
 date: 23 September 2026
-metaRows: Prepared for=Johannes Le Roux & build team;Date=23 September 2026;Status=Research v1, for discussion;Repo=getluckyjo/simsoftware
+metaRows: Prepared for=Johannes Le Roux & build team;Date=23 September 2026;Status=Research v2 (Golfzon base case);Repo=getluckyjo/simsoftware
 ---
 
 ## Executive summary
@@ -20,22 +20,33 @@ metaRows: Prepared for=Johannes Le Roux & build team;Date=23 September 2026;Stat
 2. **Simulator aces happen more often than real ones.** Golfzon's own data works out to about **1 in 7,000** par-3 shots, against about 1 in 12,500 for an amateur on a real course. Korea's per-game screen-golf insurance ran claims **16× higher** than on-course cover and loses money. Prizes must scale with distance, and paid attempts must be capped.
 3. **Money on a single shot is a legal grey zone.** US precedent (Florida AGO 90-58; *Las Vegas Hacienda v. Gibson*) treats an insured hole-in-one contest as a prize contract, not a bet. But single-shot odds mean some markets will treat it as gambling. Free play goes global. Paid shots open market by market, starting with **South Africa and the US "dominant-factor" states**.
 
+**The base case: Golfzon.** Get Lucky is already ordering **272 Golfzon bays** for Virgin Active (200 bays, 130 clubs) and Planet Fitness (72 bays, 42 clubs) in South Africa, in phases from 2027 to 2029. That order is our way into Golfzon's software:
+- **Get Lucky mode goes inside Golfzon.** The holes, the prize ladder and the insured shot run inside Golfzon's own software, not in a separate app.
+- **The gym bays prove it.** They are the live reference, with about **95 paid shots per bay per month** at maturity in the existing bay model.
+- **Then it goes global.** Golfzon takes it to its **~13,000 locations in 40+ countries**. Paid play runs where it's legal, free play everywhere else.
+
+Golfzon's closed platform works in our favour here. Its bays are installed by Golfzon, it logs members in, it records swing video (NASMO), and Golfzon holds a decade of ace data, including 143,020 aces in 2022. That covers the three hardest problems: shot integrity, insurer pricing and distribution.
+
 **The recommendation.**
-- Build a lightweight **Unity "adjudicator" app** plus a cloud platform. Don't build a full simulator.
-- Launch free worldwide.
-- Switch on paid insured shots at partner venues in South Africa and then the US.
-- Pursue TrackMan as the premium data partner.
-- The build is estimated at **$0.9M–1.3M over 12 months** with a nine-person, South Africa-led team. It reuses the claims, evidence and risk engine Get Lucky already runs in production.
+- Put the software integration on the table **in the same negotiation as the hardware order**.
+- Build the Get Lucky cloud platform: wallet, KYC, insurance, claims and payouts. Golfzon builds "Get Lucky mode" in its client.
+- Go live on the first Virgin Active and Planet Fitness bays in 2027.
+- Roll out to Golfzon's US venues in 2028, and to its global network from 2029.
+- Add a lightweight Unity adjudicator later for other hardware (TrackMan, Uneekor), so we are never dependent on one partner.
+- The first-year build is estimated at **$0.8–1.2M** with an eight-person, South Africa-led team. It reuses the claims, evidence and risk engine Get Lucky already runs in production.
 
 ```stats
 **9M+** | US simulator players in 2025; half are not on-course golfers
 **1 in 7,000** | Golfzon par-3 ace rate (2022), easier than the real world
-**~45%** | Blended margin per paid shot after premium, venue share and fees (base case)
-**$0.9–1.3M** | 12-month MVP build, SA-led team
-**2,500 bays** | Year-3 base case: about $16M revenue
+**~30%** | Blended margin per paid shot after premium, venue and Golfzon shares (base case)
+**~13,000** | Golfzon locations to roll out to
+**272 bays** | Golfzon gym order, VA + PF, 2027–29
 ```
 
-> **Next** Three things unlock everything else: an insurer term sheet for simulator aces, a South African legal opinion, and one launch-monitor partner (TrackMan or Uneekor) willing to send signed shot data. All three can run in parallel during the first 90 days.
+> **Next** Three things unlock everything else, and all three can run in parallel over the next 90 days:
+> 1. A **Golfzon term sheet** that covers software integration and ace data, not just hardware.
+> 2. A **Santam/Indwe term sheet** for simulator aces.
+> 3. A **South African legal opinion**.
 
 ## The market
 
@@ -126,12 +137,88 @@ Skill Strike proves venues and players will pay per swing, and that 44 US states
 | Back Nine | 100+ | Full Swing (already runs Skill Strike) |
 | Five Iron Golf | ~50 locations, 500+ bays, 7 countries | TrackMan |
 | Golfzon (US) | ~160 sites, growing 90%+ a year | Golfzon |
-| Gyms (Virgin Active, Planet Fitness SA) | 272 bays planned in Get Lucky's simulator strategy | Golfzon (proposed) |
+| **Gyms (Virgin Active, Planet Fitness SA)** | **272 bays ordered by Get Lucky, 2027–29: the base case** | **Golfzon** |
+
+## The Golfzon base case
+
+### The order is the way in
+Get Lucky's simulator strategy puts Golfzon bays into two South African gym chains. Get Lucky buys, installs and runs the bays under 10-year concessions, and asset finance pays for 90% of them.
+
+| Chain | Bays | Clubs | Phasing (bays) | Hardware at list |
+|---|---:|---:|---|---:|
+| Virgin Active | 200 | 130 | 2027: 40 Signature; 2028: 100 Play; 2029: 20 Play + 40 Practice | ~$8M |
+| Planet Fitness | 72 | 42 | 2027: 20 Signature; 2028: 40 Play; 2029: 6 Play + 6 Practice | ~$3M |
+| **Total** | **272** | **172** | | **~$11M** |
+
+That makes Get Lucky a **chain customer** for Golfzon, with a three-phase order that is not a dealer sale. It also gives Golfzon its first gym-chain reference outside Korea and the US. The outreach to Sean Pyun (CEO, Golfzon America, and Head of Global Business) already offers "the insured shot on every bay: a prize product Golfzon can take to its other operators". This report makes that offer the product.
+
+### What each side brings
+
+**Get Lucky**
+- **The order:** 272 bays, financed, in two gym chains.
+- **The product:** the insured hole-in-one, live since 2025 on real South African courses with Santam and Indwe.
+- **The back office:** wallet, payments, identity checks, claims, payouts, insurance and legal. These are the parts Golfzon doesn't run outside Korea.
+- **The content:** the Collection, plus Get Lucky's 30 partner courses scanned into Golfzon's library.
+- **The brand and the audience:** "Back yourself on any par-3."
+
+**Golfzon**
+- **"Get Lucky mode"** inside its commercial software (TwoVision, Vision, GDR). The mode:
+  - locks the tee to the tier's distance;
+  - enforces the settings, using the same rules as its own hole-in-one challenge (Pro difficulty, no mulligans);
+  - shows the prize ladder.
+- **Signed events** from Golfzon's cloud to ours: shot armed, launch data, result and the NASMO swing video.
+- **Ace-rate history** by hole, distance and handicap, shared with our insurer under NDA, so the premium is priced on real data from day one.
+- **Distribution:** Golfzon offers the mode to its operators worldwide.
+
+### Why Golfzon solves the hard problems
+- **Integrity.** Commercial Golfzon bays are installed and serviced by Golfzon, and players log in as members. The system records swing video, and venues can't edit its settings the way home software can be edited. A shot result that arrives as a signed event from Golfzon's cloud is far harder to fake than local open JSON.
+- **Pricing.** Golfzon recorded **143,020 aces in 2022**, about 1 in 7,000 par-3 shots. No insurer has a better dataset for simulator aces.
+- **Precedent.** In Korea, Golfzon already runs hole-in-one prize pools (checked against its own records plus NASMO video), and insurers sell per-game ace cover verified against the simulator's records. The model works at scale. Get Lucky adds big insured prizes and markets outside Korea.
+- **Scale.** About 13,000 locations, 6M+ members, 100M+ rounds a year, and a US business growing 90%+ a year.
+
+### Three stages
+| Stage | When | Where | Mode |
+|---|---|---|---|
+| **1. Gym bays (SA)** | 2027–29 | 272 bays at Virgin Active and Planet Fitness | Paid ZAR ladder + free play. The live reference. |
+| **2. Golfzon US and UK venues** | 2028–29 | Golfzon US (~160 sites) and Golfzon Social; UK/Europe after legal opinions | Paid USD/GBP ladder in permitted states and markets |
+| **3. Golfzon global** | 2029+ | Golfzon's ~13,000 locations in 40+ countries | Paid where permitted; **free play with sponsor prizes** in Korea, Japan and other restricted markets |
+
+### What the gym bays produce (from the existing bay model, base case)
+The Virgin Active and Planet Fitness models already assume an insured shot:
+- R50 a swing for a R25,000 prize;
+- taken 0.625 times per booked hour;
+- 24% of the entry paid as premium.
+
+That gives:
+
+| Year | Bays | Paid shots | Shots per bay per month | Insured-shot revenue (R50) | Expected aces (1 in 8,000) |
+|---|---:|---:|---:|---:|---:|
+| 2027 | 60 | 22,300 | 31 | R1.1m | ~3 |
+| 2028 | 200 | 107,700 | 45 | R5.4m | ~13 |
+| 2029 | 272 | 230,700 | 71 | R11.5m | ~29 |
+| 2030 | 272 | 297,400 | 91 | R14.9m | ~37 |
+| 2031 | 272 | 312,500 | **96** | R15.6m | ~39 |
+
+This is deliberately conservative: every shot is priced at the lowest tier. A mix across the full ZAR ladder (R50 to R1,000) roughly doubles the revenue. The bigger value of stage 1 is **proof**:
+- the real ace rates;
+- the fraud controls;
+- the insurer's loss ratio;
+- a live Golfzon reference that other operators can visit.
+
+### Terms to negotiate with Golfzon
+1. **Scope.** Golfzon builds and maintains Get Lucky mode and the signed event feed. Get Lucky builds the cloud platform and runs the prize programme.
+2. **Revenue share.** A platform share for Golfzon on paid shots. We **assume 15%** for planning. This is the main commercial lever, and it can be traded against the hardware price.
+3. **Exclusivity.** Get Lucky is Golfzon's exclusive insured-prize partner in agreed markets. Golfzon is the hardware standard for Get Lucky-operated bays.
+4. **Data.** Golfzon shares historic and live ace data with Get Lucky's insurer. Get Lucky shares claims outcomes back.
+5. **Content.** The Collection and Get Lucky's partner courses go into Golfzon's library, co-branded.
+6. **Timing.** Get Lucky mode is live on the first Signature bays when they open in 2027.
+
+> **If Golfzon says no** The gym bays still run Golfzon for bay hire, and Get Lucky falls back to the any-simulator plan: its own Unity adjudicator on TrackMan or Uneekor bays. Keep that path alive, since it is also the route onto non-Golfzon hardware later.
 
 ## The product
 
 ### What the player sees
-1. **Open Get Lucky Sim** on the simulator PC, or scan the QR code on the bay screen at a partner venue.
+1. **Choose Get Lucky mode** in the Golfzon menu, or scan the QR code on the bay screen, which links the bay to the player's Get Lucky account and wallet.
 2. **Pick a hole** from the Collection: signature par-3s from around the world, each with a story, a real yardage and a prize ladder.
 3. **Play free.** Unlimited shots, closest-to-the-pin leaderboards, daily challenges and badges. No account is needed for a first swing.
 4. **Back yourself.** Choose a paid tier. The tee locks at that tier's distance. The cameras arm, a shot code appears on screen, and the player gets one swing.
@@ -144,6 +231,8 @@ The launch set has 8–12 par-3s, each "inspired by" a famous hole until it has 
 - a cliff-top ocean carry in the style of Pebble Beach 7;
 - a Fancourt Links hole;
 - a Glendower 14th. The simulator strategy's pitch assets already include one.
+
+Holes are delivered in Golfzon's course format. Golfzon already scans real courses for its library, for example through its Pebble Beach and Arcis Golf partnerships.
 
 Seasonal holes and sponsor-named holes rotate through the Collection.
 
@@ -193,19 +282,19 @@ That makes free play easy to support broadly. For paid play, it is untrusted by 
 | TrackMan 4 / iO | Closed ecosystem; terms forbid replacement software | Partner deal | ⭐ Premium partner |
 | Golfzon (commercial) | Closed platform | ❌ | Strategic deal only |
 
-> **Cross-repo flag** The simulator-channel plan pitches **Golfzon** bays for Virgin Active and Planet Fitness. Golfzon's commercial platform is closed, so it will not run Get Lucky Sim unless Golfzon agrees. Either make an integration or co-branded "Get Lucky mode" part of the Golfzon conversation, or spec TrackMan or Uneekor for Get Lucky-operated bays.
+> **Golfzon first** Golfzon's commercial platform is closed to outside software. That is why the integration has to be part of the hardware negotiation: Golfzon builds Get Lucky mode, and Get Lucky runs the platform behind it. The open-hardware routes in this table are for free play and for stage 3 expansion onto other brands.
 
 ### Build, plug in, or partner?
 
 | Option | What it is | Verdict |
 |---|---|---|
 | **A. Full simulator** | Compete with GSPro and E6: courses, putting, a full round | **No.** 12–24 months of work, a crowded market, and golfers won't switch simulator for a par-3 |
-| **B. Adjudicator app** | Lightweight Unity app: one tee, one green, our own versioned physics, with the outcome decided on our server | **Yes. The core product.** Small scope, we own the result, and insurers can audit the maths |
-| **C. Host inside a partner** | Our challenge runs inside TrackMan, GSPro or E6 | **Yes, in parallel.** TrackMan already runs paid, video-verified play (NEXT Golf Tour, $100K+ purses) |
+| **C. Host inside a partner** | Get Lucky mode runs inside **Golfzon**. Get Lucky's cloud handles money, identity, insurance and claims | **Yes. The core product.** It rides the 272-bay order, Golfzon's integrity and data, and its 13,000 locations |
+| **B. Adjudicator app** | Lightweight Unity app: one tee, one green, our own versioned physics, with the outcome decided on our server | **Yes, second.** For non-Golfzon hardware (TrackMan, Uneekor, Foresight) and as the fallback if Golfzon terms don't land |
 
 **Engine.** Use Unity. GSPro's whole course pipeline (OPCD, Blender and Unity) and its designer community are Unity-native. Unity scrapped its runtime fee in 2024. Unreal's 5% royalty above $1M could apply to entry revenue.
 
-**Physics.** Implement the published Penner and Nathan ball-flight models (drag, Magnus lift, spin decay), then bounce, roll and cup capture. Holmes found a ball drops only below about 1.3 m/s at the cup. The ace is decided by bounce, roll, flagstick and cup, so that code must be deterministic, versioned and published to the insurer. Use libgolf (GPL) for validation only. MIT-licensed references such as openfairway can be used freely.
+**Physics.** Inside Golfzon, Golfzon's physics decide the shot. Our server re-checks each paid result against the launch data, and the insurer audits Golfzon's settings and ace history. For the adjudicator (option B), implement the published Penner and Nathan ball-flight models (drag, Magnus lift, spin decay), then bounce, roll and cup capture. Holmes found a ball drops only below about 1.3 m/s at the cup. The ace is decided by bounce, roll, flagstick and cup, so that code must be deterministic, versioned and published to the insurer. Use libgolf (GPL) for validation only. MIT-licensed references such as openfairway can be used freely.
 
 ## Architecture
 
@@ -220,7 +309,12 @@ Get Lucky already runs a production claims pipeline for on-course aces. It has:
 **Get Lucky Sim reuses those concepts and that team knowledge.** It does not start again.
 
 ### Components
-1. **Sim client (Windows, Unity).**
+0. **Golfzon integration (primary).**
+   - Get Lucky mode inside Golfzon's client, built by Golfzon to our spec.
+   - A signed server-to-server event feed from Golfzon's cloud: attempt armed, launch data, result, NASMO video reference.
+   - A bay link by QR, so the Golfzon member account maps to the Get Lucky wallet.
+   - The spec and the API contract are Get Lucky's first engineering deliverable.
+1. **Sim client (Windows, Unity; stage 3, non-Golfzon hardware).**
    - Renders the hole and listens for launch-monitor data: an Open Connect listener on a configurable port, plus partner SDK adapters.
    - Runs a local watchdog that looks for injector processes and loopback traffic.
    - Holds a TPM-backed device key.
@@ -247,7 +341,8 @@ Get Lucky already runs a production claims pipeline for on-course aces. It has:
 
 | Layer | Recommended | Why |
 |---|---|---|
-| Client | Unity (C#) on Windows | Simulator PCs are Windows; the Unity course pipeline already exists |
+| Golfzon integration | Signed webhooks (HMAC or mTLS) + REST, idempotent event store | Golfzon builds the in-sim mode; we verify and record every event |
+| Client (stage 3) | Unity (C#) on Windows | Simulator PCs are Windows; the Unity course pipeline already exists |
 | Web / API | Next.js 16 + TypeScript on Vercel | The same stack as `getluckyapp`; the team already knows it |
 | Database / auth | Supabase Postgres (RLS), with a move to dedicated Postgres at scale | Reuse; append-only tables are already patterned |
 | Adjudicator | TypeScript or Go service, deterministic | Portable physics, testable against Unity |
@@ -282,8 +377,9 @@ Shot integrity is the whole business. One fake $100K ace costs more than a year 
 |---|---|---|---|---|
 | **Free** | Anywhere | Any Open Connect source | None | No cash |
 | **Home paid** (phase 2+) | Home sim | Official vendor path | Two-angle phone video from an attested app, physics checks, KYC | $2,500–5,000 |
+| **Golfzon bay** (stage 1–2) | Gym or Golfzon venue | Signed Golfzon cloud events | NASMO swing video, member login, locked settings, bay camera face-match, staff witness above $5K | $35,000 |
 | **Certified venue** | Partner bay, locked PC | Partner SDK or signed stream | Fixed dual cameras, staff witness, live upload | $35,000 |
-| **Legend** | Certified venue | Partner cloud (e.g. TrackMan) | All of the above plus a live remote proctor | $100,000 |
+| **Legend** | Golfzon bay or certified venue | Golfzon or partner cloud | All of the above plus a live remote proctor | $100,000 |
 
 ### What the system checks on every paid shot
 
@@ -458,8 +554,8 @@ The product runs at a loss and is kept only for customer acquisition ([Chosun](h
 ## Business model & financials
 
 ### Revenue streams
-1. **Paid insured shots.** The core, at about 45% margin in the base case.
-2. **Venue licence.** Venues get the base tier free and earn 20% of shot revenue. **Venue Pro** costs $49–99 per bay per month and adds events, branding and CRM export. Golfzon venues already pay $2–4K per bay per year for software.
+1. **Paid insured shots.** The core. About 45% margin before any platform share, and about **30% after a 15% Golfzon share**.
+2. **Venue share, not a venue licence, in the Golfzon network.** Golfzon operators earn 20% of shot revenue. In the gym bays, that 20% is Virgin Active's or Planet Fitness's concession share. A paid **Venue Pro** licence ($49–99 per bay per month) applies only to non-Golfzon venues in stage 3.
 3. **Sponsor-named holes.** "The [Brand] 17th", branded tee boxes, and sponsor-funded prize shots, at an indicative $2–10K per hole per month per region.
 4. **Corporate events.** A packaged "$25K Shoot-out" for company days, at a fixed $500–2,000 plus premium and margin.
 5. **Consumer subscription.** $79–99 a year as an *add-on* to GSPro ($250 a year) or E6 ($300–600 a year). It includes unlimited Collection play, stats and one free insured shot a month.
@@ -482,68 +578,76 @@ The product runs at a loss and is kept only for customer acquisition ([Chosun](h
 | Major | $50.00 | $8.75 | $10.00 | $2.76 | **$28.49** | 57% |
 | Legend | $100.00 | $25.00 | $20.00 | $5.26 | **$49.74** | 50% |
 
+**The Golfzon share.** On Golfzon bays a platform share comes out of the margin. At the planning assumption of 15%, the margins above fall by 15 points: about **42–45% on Starter to Major and 35% on Legend** in the base case.
+
 **Sensitivity to the ace rate:**
 - At the **stress case** (1 in 3,000), margins fall to 27–37% on the lower tiers and **8% on Legend**. That is why Legend is gated.
 - A flat 1,000× ladder ($5 for $5,000) makes **0%** at 1 in 3,000.
-- The blended margin is about **35% in the stress case, 45% in the base case and 55% in the optimistic case**.
+- The blended margin is about **35% in the stress case, 45% in the base case and 55% in the optimistic case**, before the Golfzon share. After a 15% share it is about 20%, 30% and 40%.
 
 ### Three-year scenarios (illustrative)
+Year 3 is 2029. Bays are the 272 gym bays plus Golfzon bays connected in markets where paid play is permitted.
+
 Assumptions:
 - Average entry: $8 (low), $9 (base), $10 (high).
-- Venue Pro take-up: 15–35%.
+- Golfzon share 15%.
 - Sponsor holes: $2K, $4K and $6K a month.
 
-| Scenario | Year-3 bays | Paid shots per bay per month | Year-3 revenue | Year-3 contribution |
+| Scenario | Year-3 bays | Paid shots per bay per month | Year-3 revenue | Year-3 contribution after Golfzon share |
 |---|---:|---:|---:|---:|
-| Low | 750 | 40 | $2.4M | $1.1M |
-| **Base** | **2,500** | **80** | **$16.4M** | **$8.1M** |
-| High | 6,000 | 150 | $80.0M | $43.3M |
+| Low (gym bays + early US) | 750 | 40 | $2.4M | $0.8M |
+| **Base** | **2,500** | **80** | **$16.4M** | **$5.8M** |
+| High | 6,000 | 150 | $80.0M | $31.8M |
 
 **Base-case sense checks:**
+- The gym model reaches about 96 paid shots per bay per month at maturity, so 80 across the network is conservative.
 - 80 paid shots a month is **fewer than 3 a day per bay**.
 - The venue earns about $144 per bay per month.
-- 2,500 bays is about 5% of Golfzon's installed base alone.
+- 2,500 bays is about **5% of Golfzon's ~47,000–51,000 simulators**.
+- **Needs validating with Golfzon:** how many of those bays sit in markets where paid play is permitted. Korea, Japan and China are free-play only. Golfzon doesn't publish counts by country, and this is the single biggest assumption in the plan.
 - The network produces about **210 aces a year**, four a week. That is enough winners for social proof without breaking the insurer.
 
-**Break-even.** Fixed opex is about $1.5–3M a year from year 2. The base case breaks even around the end of year 2.
+**Break-even.** Fixed opex is about $1.5–3M a year from year 2. After the Golfzon share, the base case breaks even in the course of year 3.
+
+**Free play in Korea and Japan.** About 94M Golfzon rounds a year are played in Korea alone. Paid shots aren't possible there, but sponsor-funded prize holes and branded Collection holes are, and they aren't in the numbers above.
 
 ## Team, budget & roadmap
 
-### MVP team (12 months, 9 people)
+### First-year team (8 people)
+Golfzon renders the holes and builds Get Lucky mode. The first-year team is therefore platform-heavy, with less Unity work than the any-simulator plan.
+
 | Role | FTE | SA-led cost (loaded) |
 |---|---:|---:|
-| Product lead | 1 | $60K |
-| Unity / physics developers | 2 | $110K |
-| Backend (ledger, adjudicator, claims) | 1.5 | $83K |
-| Integrations engineer (launch monitors) | 1 | $60K |
-| 3D artist / course designer | 1.5 | $60K |
+| Product lead (also owns the Golfzon relationship) | 1 | $60K |
+| Backend: ledger, claims, verification | 2 | $110K |
+| Integrations engineer: Golfzon API and event feed | 1 | $60K |
+| Unity / physics: result verification now, adjudicator later | 1 | $55K |
+| Course designer: Collection holes in Golfzon format | 1 | $40K |
 | QA | 1 | $30K |
 | UX/UI designer | 0.5 | $23K |
 | Compliance / risk | 0.5 | $35K |
-| **Team total** | **9** | **~$470K** |
-
-The same team costs about $720K in Eastern Europe and about $1.4M in the US.
+| **Team total** | **8** | **~$413K** |
 
 ### Non-payroll MVP costs
 | Item | Estimate |
 |---|---|
 | Legal opinions (SA + US) | $70–170K |
 | Hero par-3s (8–10) incl. surveys and early licences | $50–150K |
-| Test bays and launch monitors (TrackMan iO, Uneekor, FlightScope, Square) | $60–100K |
+| Golfzon development bay and test kit (production bays come with the gym order) | $30–60K |
 | Security review + GLI/BMM-style physics and fairness audit | $30–80K |
 | Insurance programme set-up, deposit premium, E&O and cyber cover | $50–150K |
 | Cloud, tooling, KYC and location minimums | $30–55K |
-| **MVP total incl. team and 15% contingency** | **$0.9–1.3M** |
+| **First-year total incl. team and 15% contingency** | **$0.8–1.2M** |
 
 ### Roadmap
 | Phase | When | What ships |
 |---|---|---|
-| **0: Foundations** | Months 0–3 | Legal opinions (SA, US), insurer term sheet, partner talks (TrackMan, Uneekor, Foresight), physics spec, first 3 holes greyboxed |
-| **1: Free play** | Months 3–7 | Unity client, Open Connect listener, 6 holes, accounts, leaderboards, free global launch. Actuarial data collection starts |
-| **2: Certified venues (SA)** | Months 7–10 | Adjudicator, ledger, cameras, venue console, claims. Paid ZAR tiers at 10–20 SA pilot bays, including Get Lucky/Golfzon gym bays if integrated |
-| **3: US venues** | Months 10–12 | USD ladder up to $100K Legend, Paysafe/Nuvei, geolocation, 1099 flow. Pilot venues in dominant-factor states |
-| **4: Home paid + partners** | Year 2 | Attested phone-video tier for home sims, TrackMan/partner-hosted challenge, UK opinion → launch, sponsor-named holes at scale |
-| **5: Global** | Year 2–3 | Malta route for the EU, more languages, the Collection past 25 holes, self-insured lower tiers with stop-loss |
+| **0: The Golfzon deal** | Q4 2026 | Golfzon term sheet (hardware + Get Lucky mode + event feed + ace data), Santam/Indwe term sheet, SA legal opinion, integration spec and API contract |
+| **1: Build** | H1 2027 | Cloud platform (wallet, ledger, KYC, claims, verification), Golfzon builds Get Lucky mode, first 6 Collection holes in Golfzon format |
+| **2: Gym bays live** | Mid 2027 | Paid ZAR ladder on the first 60 Signature bays (40 Virgin Active, 20 Planet Fitness). Free play on all of them |
+| **3: Scale SA + Golfzon US** | 2028 | 200 gym bays. US legal opinion, then paid USD ladder at Golfzon US venues in permitted states. Free play with sponsor prizes across Golfzon's global network |
+| **4: Golfzon global** | 2029 | 272 gym bays. UK/EU after legal opinions; Golfzon offers Get Lucky mode to its operators worldwide. $100K Legend tier on certified bays |
+| **5: Beyond Golfzon** | 2029+ | Unity adjudicator for TrackMan, Uneekor and Foresight venues, home-sim tier, self-insured lower tiers with stop-loss |
 
 ## Risk register
 
@@ -553,21 +657,25 @@ The same team costs about $720K in Eastern Europe and about $1.4M in the US.
 | Real ace rate higher than priced | Medium | High | Distance-scaled ladder, attempt caps, free-play actuarial data, aggregate cap in the policy |
 | Insurer won't write per-shot $100K cover | Medium | High | Start with Santam/Indwe in SA and lower limits; Lloyd's broker process; self-insured low tiers with stop-loss later |
 | Market treats it as gambling | Medium | High | Market-by-market opinions, skill-strengthening design, free-play fallback everywhere |
-| Launch-monitor makers refuse integration | Medium | Medium | Free play works on open devices now; TrackMan/Uneekor partnership is a phase-0 priority; the venue channel gives leverage |
+| **Golfzon declines or stalls the software integration** | Medium | High | Negotiate it inside the 272-bay hardware order; offer revenue share and exclusivity; keep the Unity adjudicator on TrackMan/Uneekor as the fallback |
+| **Dependence on one platform partner** | Medium | High | Exclusivity limited to agreed markets and terms; own the brand, wallet, players and insurance; add other hardware in stage 5 |
+| Golfzon builds its own insured prize product | Medium | Medium | It already runs ace pools in Korea. We bring what it lacks outside Korea: insurance, payouts, legal cover, brand. Tie it into contract terms |
+| Fewer Golfzon bays in permitted markets than assumed | Medium | High | Get Golfzon's bay counts by country before modelling further; the gym bays alone prove the product |
 | Payment rails decline | Medium | Medium | Opinion letter up front; gaming-specialist PSPs; PayFast in SA |
 | Course IP claims | Low–medium | Medium | "Inspired-by" naming, no logos, IP clearance before marketing real names |
 | Venue staff collusion | Low | High | Remote proctor on high tiers, rotating reviewers, anomaly flags per venue |
-| Competitor copies or upscales it (Full Swing Skill Strike, TrackMan, Golfzon) | High | Medium | Move first, lock insurer and venue partners, own the brand and the actuarial data |
+| Competitor copies or upscales it (Full Swing Skill Strike, TrackMan) | High | Medium | Move first, lock insurer and venue partners, own the brand and the actuarial data |
 
 ## Open questions for Johannes
 
 1. **Insurer.** Will Santam/Indwe extend the current policy to simulator aces in SA, and do they have appetite outside SA? Or do we run a Lloyd's broker process for USD cover?
-2. **Golfzon.** Should Get Lucky Sim become part of the Golfzon conversation for the Virgin Active / Planet Fitness bays, or should Get Lucky-run bays standardise on TrackMan or Uneekor?
+2. **Golfzon terms.** What revenue share, and in which markets exclusivity, are we willing to give Golfzon? Should the software integration be a condition of the hardware order?
 3. **Home or venue first.** Is a venue-only paid launch acceptable for the first 12 months? Home sims would stay free play plus low-limit paid shots later.
 4. **Top prize.** Keep the **$100K Legend** tier gated (KYC, handicap, 3 attempts a day, live witness), or cap at $35K until the data is in?
 5. **Brand.** Is it "Get Lucky Sim", "Get Lucky Hole-in-One Sim", or a product name under the Get Lucky umbrella?
 6. **Team.** SA-led in-house build, or a studio partner for the Unity client with backend in-house?
-7. **Funding.** Is the $0.9–1.3M MVP funded from Get Lucky's balance sheet, the gym-bay debt package, or a separate raise?
+7. **Funding.** Is the $0.8–1.2M first-year build funded from Get Lucky's balance sheet, the gym-bay financing package, or a separate raise?
+8. **Golfzon data.** Can we get Golfzon's bay counts by country and its ace-rate history under NDA before the term sheet? The global numbers depend on both.
 
 ## Sources
 
@@ -618,6 +726,10 @@ Key sources below. Full research notes with every link are kept with the repo's 
 - Visa Merchant Data Standards Manual: [visa.com](https://usa.visa.com/dam/VCOM/download/merchants/visa-merchant-data-standards-manual.pdf)
 - Stripe restricted businesses: [stripe.com](https://stripe.com/legal/restricted-businesses)
 - 1099-MISC $2,000 threshold: [verrill-law.com](https://www.verrill-law.com/blog/the-new-2000-threshold-for-sending-irs-form-1099-misc-to-prize-winners/)
+
+**Get Lucky internal**
+- Golfzon outreach brief and gym bay model: `getluckyjo/simulatorstrategy` (`docs/golfzon-outreach.md`, `model/model.py`, `model/model_pf.py`)
+- On-course claims, evidence and risk engine: `getluckyjo/getluckyapp` (`ARCHITECTURE.md`)
 
 **Build cost**
 - Offshore development rates: [uvik.net](https://uvik.net/blog/offshore-software-development-rates-by-country/)
