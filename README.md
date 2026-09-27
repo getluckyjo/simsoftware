@@ -74,13 +74,14 @@ npm run build
 
 ## Deploy
 
-On Vercel:
-1. Import `getluckyjo/simsoftware`. The framework is Next.js, and no environment variables are needed.
-2. Add a domain the way the pitch sites have theirs.
+Live on Vercel as the `demogolfzon` project in the Get Lucky team:
 
-Every response carries `X-Robots-Tag: noindex`.
+- https://demogolfzon.vercel.app (public, no Vercel login, like the pitch sites)
+- https://demogolfzon.virgingolf.co.za once DNS is set: a CNAME `demogolfzon` → `c695567fa1b0f9a0.vercel-dns-016.com` in the GoDaddy DNS for virgingolf.co.za, the same record `golfzon` and `pitch` use
 
-`.npmrc` sets `legacy-peer-deps`: npm 10's resolver crashes on Next 16's optional peers without it.
+The project is linked to this repo with `main` as its production branch, but the demo lives on `claude/golfzon-golf-integration-8o5bb3`, so production was deployed from that branch by hand. Pushes to the branch make preview deployments only. Until the branch is merged to `main`, promote a new version by redeploying the latest branch commit to production (Vercel dashboard → Deployments → the preview → Promote). A push to `main` before the merge would replace the demo with whatever is on `main`.
+
+No environment variables are needed. Every response carries `X-Robots-Tag: noindex`. `.npmrc` sets `legacy-peer-deps` because npm 10's resolver crashes on Next 16's optional peers without it.
 
 ## Where things are
 
