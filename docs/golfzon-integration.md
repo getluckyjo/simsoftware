@@ -210,9 +210,10 @@ own service if Level 2 happens.
 
 ## 10. What we show Golfzon next week
 
-A live demo on one screen, built in this repo and deployed on Vercel. It
-needs no Golfzon access, because we play Golfzon's side with the contract
-from section 6.
+A live demo on one screen, built in this repo; `README.md` has the run of
+show. It needs no Golfzon access, because we play Golfzon's side with the
+contract from section 6. Prices are in US dollars: $1, $5, $20 and $50 a
+swing, each paying 1,000×, up to $50,000.
 
 - **Left, the bay:** a Golfzon-style challenge screen.
   - It shows the hole, the locked settings panel and the check-in QR.
@@ -225,7 +226,8 @@ from section 6.
   - A miss shows the distance and a leaderboard place.
   - An ace shows the claim already built, then the reviewer's view and the evidence pack.
 - **A presenter switch** makes the next shot an ace on cue.
-- **A printed one-pager:** the API in section 6, the rules in section 7, and the data ask in section 8.
+- **Stress tests from the presenter panel:** a forged ace (refused, 401), a Golfzon retry (no change), and a venue that lowers the difficulty (entry refused and refunded).
+- **`/spec`:** the API in section 6, the rules in section 7 and the data ask in section 8, as a page to print or send, with signed examples that verify against the live endpoint.
 
 This is the "one more thing, for the room" the brief already promises:
 "Your simulators measure it better than any camera on a tee."
