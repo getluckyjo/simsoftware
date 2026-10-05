@@ -59,6 +59,12 @@ export function applyVerdict(ledger: LedgerState, v: Verdict): { ledger: LedgerS
   }
 }
 
+/** An armed entry that was not played in its window: closed, and the stake goes back. */
+export function expireEntry(ledger: LedgerState, ref: string): LedgerState | null {
+  if (ledger.entries[ref] !== 'armed') return null
+  return { ...ledger, entries: { ...ledger.entries, [ref]: 'refunded' } }
+}
+
 export function openEntry(ledger: LedgerState, ref: string): LedgerState {
   return { ...ledger, entries: { ...ledger.entries, [ref]: 'arming' } }
 }

@@ -120,6 +120,8 @@ a { color: inherit; }
 .bay-banner.armed { background: var(--gold); color: var(--green-deep); }
 .bay-banner.armed b { text-transform: uppercase; letter-spacing: 0.08em; }
 .bay-banner.refused { background: var(--red); color: #fff; }
+.bay-banner.expired { background: var(--amber); color: #1a1406; }
+@container (max-width: 640px) { .bay-banner.refused, .bay-banner.expired { white-space: normal; width: calc(100% - 28px); justify-content: center; text-align: center; border-radius: 16px; } }
 .bay-armed-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green-deep); animation: blink 1s ease-in-out infinite; }
 @container (max-width: 640px) { .bay-cond > span:not(:last-child) { display: none; } .bay-banner.armed span:nth-child(3), .bay-banner.armed span:last-child { display: none; } }
 @keyframes blink { 50% { opacity: 0.2; } }
@@ -369,6 +371,7 @@ li.now .ph-step-dot { border-color: var(--gold); color: var(--gold); }
 .ph-claim-steps li.next b { color: rgba(245,238,222,0.55); }
 .ph-claim-steps { margin: 10px 0 14px; }
 
+.ph-refund-icon.amber { background: rgba(240,180,41,0.16); color: var(--amber); }
 .ph-refund-icon { width: 64px; height: 64px; border-radius: 50%; background: rgba(229,72,77,0.18); color: #ff9a9d; display: grid; place-items: center; margin-bottom: 12px; }
 .ph-diff { list-style: none; display: grid; gap: 6px; margin: 14px 0 4px; width: 100%; }
 .ph-diff li { font-family: var(--mono); font-size: 12px; background: rgba(229,72,77,0.12); color: #ffc4c4; border-radius: 10px; padding: 8px 10px; }
@@ -488,3 +491,73 @@ li.now .ph-step-dot { border-color: var(--gold); color: var(--gold); }
 .bay-map span { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; padding: 3px 0; background: rgba(10,18,12,0.7); }
 @container (max-width: 640px) { .bay-map { display: none; } }
 @container (max-height: 520px) { .bay-map { display: none; } }
+
+/* ── The guide line and the welcome card (for someone sent the link) ── */
+
+.guide { display: flex; align-items: center; gap: 14px; padding: 8px 14px 8px 18px; border-bottom: 1px solid var(--line); background: #101b13; min-height: 46px; }
+.guide-steps { list-style: none; display: flex; gap: 4px; flex-shrink: 0; }
+.guide-steps li { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; color: rgba(245,238,222,0.4); padding: 3px 9px 3px 4px; border-radius: 999px; }
+.guide-steps li span { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 10.5px; border: 1px solid rgba(245,238,222,0.25); }
+.guide-steps li.done { color: var(--muted); }
+.guide-steps li.done span { background: rgba(214,251,75,0.18); border-color: transparent; color: var(--lime); }
+.guide-steps li.now { color: var(--lime); background: rgba(214,251,75,0.1); }
+.guide-steps li.now span { background: var(--lime); border-color: var(--lime); color: var(--green-dark); }
+.guide-text { flex: 1; min-width: 0; font-size: 13.5px; line-height: 1.35; color: var(--cream); animation: fade 0.35s ease both; }
+.guide-btn { display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0; font-size: 12.5px; font-weight: 800; padding: 7px 14px; border-radius: 999px; background: var(--lime); color: var(--green-dark); }
+.guide-btn:hover { background: #e2ff66; }
+.guide-btn.ghost { background: none; color: var(--cream); border: 1px solid rgba(245,238,222,0.25); font-weight: 700; }
+.guide-btn.ghost:hover { border-color: var(--gold); color: var(--gold-light); }
+.guide-btn.ghost.on { border-color: var(--gold); color: var(--gold-light); background: rgba(201,169,78,0.14); }
+.guide-x { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; color: var(--muted); }
+.guide-x:hover { color: var(--cream); background: rgba(245,238,222,0.08); }
+.guide.tour { background: linear-gradient(90deg, #26351a, #152117); position: relative; z-index: 55; } /* above the claim file, which the tour opens */
+.guide.tour .guide-text { font-size: 14.5px; font-weight: 600; }
+.guide-live { display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0; font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lime); }
+.guide-live span { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); animation: blink 1.2s ease infinite; }
+.topbar-help { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.topbar-help:hover { color: var(--lime); border-color: var(--lime); }
+.stage.with-guide { grid-template-rows: auto auto auto 1fr; }
+.stage.with-guide .toast { top: 112px; }
+
+@media (hover: none) { .kbd-only, .bay-swing kbd { display: none; } }
+@media (max-width: 1180px) {
+  .guide { flex-wrap: wrap; gap: 6px 10px; padding: 8px 10px 9px 12px; }
+  .guide-steps { flex: 1; order: 1; }
+  .guide-x { order: 2; }
+  .guide-text { flex-basis: 100%; order: 3; font-size: 13px; }
+  .guide-btn { order: 4; }
+  .guide-live { flex: 1; order: 1; }
+  .guide.tour .guide-text { font-size: 13.5px; }
+}
+@media (max-width: 520px) {
+  .guide-steps li { padding-right: 6px; font-size: 0; gap: 0; }
+  .guide-steps li.now { font-size: 11px; gap: 5px; }
+  .guide-btn { font-size: 12px; padding: 6px 11px; }
+  .topbar-help span { display: none; }
+  .topbar-help { padding: 6px 9px; }
+}
+
+.welcome-wrap { position: fixed; inset: 0; z-index: 60; background: rgba(5,9,6,0.72); backdrop-filter: blur(5px); display: flex; padding: 16px; animation: fade 0.25s ease both; overflow-y: auto; }
+.welcome { margin: auto; width: min(720px, 100%); background: #122016; border: 1px solid rgba(214,251,75,0.25); border-radius: 22px; padding: 28px 30px 22px; box-shadow: 0 30px 80px rgba(0,0,0,0.6); animation: rise 0.35s ease both; }
+.welcome-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime); }
+.welcome h2 { font-family: var(--display); font-size: 40px; line-height: 1; text-transform: uppercase; margin: 10px 0 12px; }
+.welcome-lead { font-size: 15px; line-height: 1.55; color: rgba(245,238,222,0.85); }
+.welcome-panes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+.welcome-panes > div { background: var(--panel-2); border: 1px solid var(--line); border-radius: 14px; padding: 12px 13px; }
+.welcome-panes b { display: block; font-size: 14px; margin: 8px 0 3px; }
+.welcome-panes p { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
+.welcome-ic { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: rgba(214,251,75,0.12); color: var(--lime); }
+.welcome-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.welcome-actions .btn-lime { padding: 13px 20px; }
+.welcome-actions .btn-ghost { padding: 12px 20px; }
+.welcome-foot { margin-top: 14px; font-size: 12px; color: rgba(245,238,222,0.5); }
+@media (max-width: 640px) {
+  .welcome { padding: 20px 18px 16px; border-radius: 18px; }
+  .welcome h2 { font-size: 30px; }
+  .welcome-lead { font-size: 14px; }
+  .welcome-panes { grid-template-columns: 1fr; gap: 8px; margin: 14px 0; }
+  .welcome-panes > div { display: grid; grid-template-columns: 30px 1fr; column-gap: 10px; padding: 10px 12px; }
+  .welcome-panes b { margin: 0; align-self: center; }
+  .welcome-panes p { grid-column: 2; }
+  .welcome-actions > * { flex: 1 1 100%; }
+}

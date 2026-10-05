@@ -333,6 +333,17 @@ function ClaimScreen({ state, actions }: { state: DemoState; actions: DemoAction
 
 function RefundScreen({ state, actions }: { state: DemoState; actions: DemoActions }) {
   const tier = state.entry?.tier
+  if (state.refund?.kind === 'expired') {
+    return (
+      <div className="ph-play center-col">
+        <div className="ph-refund-icon amber"><I.Clock size={26} strokeWidth={2.5} /></div>
+        <h1 className="ph-h1 center">Your entry has expired</h1>
+        <p className="ph-sub center narrow">Bay {BAY.number} was armed for {CHALLENGE.entryWindowMin} minutes and nobody swung. We closed the entry and sent the stake back.</p>
+        <p className="ph-settled"><I.Check size={13} strokeWidth={3} /> {tier ? usd(tier.stakeUsd) : ''}.00 refunded to Visa •••• 4242</p>
+        <button className="btn-lime wide" onClick={actions.playAgain}>Enter again</button>
+      </div>
+    )
+  }
   return (
     <div className="ph-play center-col">
       <div className="ph-refund-icon"><I.X size={26} strokeWidth={2.5} /></div>

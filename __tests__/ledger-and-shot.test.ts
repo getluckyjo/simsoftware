@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { applyVerdict, emptyLedger, openEntry } from '@/lib/ledger'
+import { applyVerdict, emptyLedger, expireEntry, openEntry } from '@/lib/ledger'
 import type { Verdict } from '@/lib/protocol'
-import { CHALLENGE } from '@/lib/challenge'
+import { CHALLENGE, challengeWeek } from '@/lib/challenge'
 import { isRanked, mulberry32, simulateShot } from '@/lib/shot'
 
 const verdict = (effect: Verdict['effect'], eventId: string): Verdict => ({
@@ -32,6 +32,34 @@ describe('ledger', () => {
   it('does not let a shot arrive for an entry that was never armed', () => {
     const r = applyVerdict(emptyLedger(), verdict('claim', 'evt_z'))
     expect(r.outcome.status).toBe(409)
+  })
+})
+
+describe('expiry', () => {
+  it('refunds an armed entry, and then refuses a late shot for it', () => {
+    const armed = applyVerdict(openEntry(emptyLedger(), 'GL-1'), verdict('arm', 'evt_a')).ledger
+    const expired = expireEntry(armed, 'GL-1')
+    expect(expired?.entries['GL-1']).toBe('refunded')
+    const late = applyVerdict(expired!, verdict('claim', 'evt_b'))
+    expect(late.outcome.status).toBe(409)
+    expect(late.ledger.entries['GL-1']).toBe('refunded')
+  })
+
+  it('leaves an entry that was played alone', () => {
+    let l = applyVerdict(openEntry(emptyLedger(), 'GL-1'), verdict('arm', 'evt_a')).ledger
+    l = applyVerdict(l, verdict('miss', 'evt_b')).ledger
+    expect(expireEntry(l, 'GL-1')).toBeNull()
+    expect(expireEntry(emptyLedger(), 'GL-404')).toBeNull()
+  })
+})
+
+describe('challenge week', () => {
+  it('runs Monday to Sunday, UTC, around any moment in it', () => {
+    const week = { valid_from: '2026-10-05T00:00:00.000Z', valid_to: '2026-10-11T23:59:59.000Z' }
+    expect(challengeWeek(new Date('2026-10-05T00:00:00Z'))).toEqual(week)
+    expect(challengeWeek(new Date('2026-10-08T13:30:00Z'))).toEqual(week)
+    expect(challengeWeek(new Date('2026-10-11T23:59:59Z'))).toEqual(week)
+    expect(challengeWeek(new Date('2026-10-12T00:00:00Z')).valid_from).toBe('2026-10-12T00:00:00.000Z')
   })
 })
 

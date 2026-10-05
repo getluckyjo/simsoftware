@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { randomId } from '@/lib/bytes'
 import { BAY, CHALLENGE, DEFAULT_TIER_ID, tierById, type SimTier } from '@/lib/challenge'
 import { armBay, reportShot, signRaw, type SignedEvent } from '@/lib/golfzon-mock'
-import { applyVerdict, emptyLedger, openEntry, type LedgerState, type Outcome } from '@/lib/ledger'
+import { applyVerdict, emptyLedger, expireEntry, openEntry, type LedgerState, type Outcome } from '@/lib/ledger'
 import { rankShot, type Ranked } from '@/lib/leaderboard'
 import { checkEvent, SIGNATURE_HEADER, type ArmedEvent, type Check, type EntryRequest, type ShotEvent, type Verdict } from '@/lib/protocol'
 import { isRanked, simulateShot, type ShotMode, type SimulatedShot } from '@/lib/shot'
@@ -72,7 +72,7 @@ export interface DemoState {
   shotKey: number
   lastShot?: SignedEvent<ShotEvent>
   lastEvent?: { raw: string; type: string }
-  refund?: { reason: string[] }
+  refund?: { kind: 'settings' | 'expired'; reason: string[] }
   ranked?: Ranked
   claim?: Claim
   wire: WireMsg[]
@@ -81,6 +81,8 @@ export interface DemoState {
   claimOpen: boolean
   presenterOpen: boolean
   processing: boolean
+  /** The hands-free tour: what it is saying now. */
+  tour?: { caption: string }
 }
 
 const initial = (session = 0, keep?: Partial<DemoState>): DemoState => ({
@@ -107,6 +109,8 @@ export function useDemo() {
   const [state, setState] = useState<DemoState>(() => initial())
   const ref = useRef(state)
   const clockOffset = useRef(0)
+  /** The running tour's token: replaced or cleared to stop it. */
+  const tourToken = useRef<object | null>(null)
 
   const update = useCallback((fn: (s: DemoState) => DemoState) => {
     ref.current = fn(ref.current)
@@ -247,7 +251,7 @@ export function useDemo() {
       from: 'Get Lucky', to: 'Card processor', method: 'POST', path: '/v1/refunds', title: `Refund ${usd(tier.stakeUsd)}.00`,
       status: 200, outcome: { text: `${usd(tier.stakeUsd)}.00 refunded. The bay was not on the challenge settings.`, tone: 'warn' },
     })
-    update(s => ({ ...s, phase: 'refunded', refund: { reason } }))
+    update(s => ({ ...s, phase: 'refunded', refund: { kind: 'settings', reason } }))
   }
 
   const swing = () => {
@@ -344,9 +348,103 @@ export function useDemo() {
   }
 
   const reset = () => {
+    tourToken.current = null
     const keep = ref.current
     ref.current = initial(keep.session + 1, keep)
     setState(ref.current)
+  }
+
+  // ── Expiry ────────────────────────────────────────────────────────────
+
+  /** An armed entry not played in its window: disarm the bay and refund the stake. */
+  const expire = () => {
+    const s = ref.current
+    if (s.phase !== 'armed' || !s.entry || now() < s.entry.expiresAt) return
+    const ledger = expireEntry(s.ledger, s.entry.ref)
+    if (!ledger) return
+    const { entry } = s
+    update(x => ({ ...x, ledger, phase: 'refunded', refund: { kind: 'expired', reason: [`Not played within ${CHALLENGE.entryWindowMin} minutes`] } }))
+    pushWire({
+      from: 'Get Lucky', to: 'Golfzon', method: 'DELETE', path: `/v0/entries/${entry.ref}`, title: 'Disarm Bay 2: entry expired',
+      status: 200, outcome: { text: `Entry ${entry.ref} was not played within ${CHALLENGE.entryWindowMin} minutes. GOLFZON returns the bay to normal play.`, tone: 'warn' },
+    })
+    pushWire({
+      from: 'Get Lucky', to: 'Card processor', method: 'POST', path: '/v1/refunds', title: `Refund ${usd(entry.tier.stakeUsd)}.00`,
+      status: 200, outcome: { text: `${usd(entry.tier.stakeUsd)}.00 refunded. An entry that is never played costs the golfer nothing.`, tone: 'warn' },
+    })
+  }
+
+  const expireRef = useRef(expire)
+  useEffect(() => { expireRef.current = expire })
+  const expiresAt = state.phase === 'armed' ? state.entry?.expiresAt : undefined
+  useEffect(() => {
+    if (expiresAt === undefined) return
+    const t = setTimeout(() => expireRef.current(), Math.max(0, expiresAt - now()) + 50)
+    return () => clearTimeout(t)
+  }, [expiresAt])
+
+  // ── The hands-free tour ───────────────────────────────────────────────
+
+  /** Plays the whole loop by itself, with a caption for each step: for someone who was sent the link. */
+  const startTour = async () => {
+    reset()
+    const token = {}
+    tourToken.current = token
+    const on = () => tourToken.current === token
+    const say = (caption: string) => { if (on()) update(s => ({ ...s, tour: { caption } })) }
+    const pause = async (ms: number) => { await wait(ms); return on() }
+    const until = async (pred: (s: DemoState) => boolean, ms = 20_000) => {
+      for (let t = 0; t < ms; t += 100) {
+        if (!on()) return false
+        if (pred(ref.current)) return true
+        await wait(100)
+      }
+      return false
+    }
+    const playOne = async (mode: ShotMode, waitFor: Phase) => {
+      openPay()
+      if (!(await pause(1300))) return false
+      confirmPay()
+      if (!(await until(s => s.phase === 'armed'))) return false
+      if (!(await pause(2200))) return false
+      setNextShot(mode)
+      swing()
+      return until(s => s.phase === waitFor)
+    }
+
+    say('A golfer at a GOLFZON bay opens the Get Lucky app and scans the QR code on the bay screen.')
+    if (!(await pause(900))) return
+    scan()
+    if (!(await pause(2300))) return
+    checkIn()
+    say('They back themselves: $100 to win $100,000. The prize is insured, so Get Lucky carries no risk.')
+    if (!(await pause(1400))) return
+    selectTier('sim_100')
+    if (!(await pause(1600))) return
+    say('Get Lucky takes the stake and asks GOLFZON to arm Bay 2. GOLFZON locks the settings and sends back a signed message. Every message, and every check on it, is on the wire.')
+    if (!(await playOne('close', 'miss'))) return
+    say('A near miss. It settles itself from GOLFZON\'s signed shot record: no video, no forms. It goes on the leaderboard.')
+    if (!(await pause(5000))) return
+    say('Same again, and this time it drops.')
+    playAgain()
+    if (!(await pause(1400))) return
+    if (!(await playOne('ace', 'ace'))) return
+    say('Hole in one. The claim opens by itself, and the evidence is GOLFZON\'s signed record.')
+    if (!(await pause(4200))) return
+    showClaim()
+    if (!(await pause(2200))) return
+    say('This is what the reviewer and the insurer see. Both records are checked against GOLFZON\'s public key, right here.')
+    setClaimOpen(true)
+    if (!(await pause(7500))) return
+    setClaimOpen(false)
+    say('That is the whole loop. Your turn: press Play it yourself, or open Presenter and try to break it.')
+    if (!(await pause(9000))) return
+    stopTour()
+  }
+
+  const stopTour = () => {
+    tourToken.current = null
+    update(s => ({ ...s, tour: undefined }))
   }
 
   return {
@@ -354,6 +452,7 @@ export function useDemo() {
     actions: {
       scan, checkIn, selectTier, openPay, closePay, confirmPay, swing, onRest, playAgain, home, showClaim, setClaimOpen,
       setNextShot, setHandicap, setGolferName, toggleLowerDifficulty, togglePresenter, forgeAce, replayLast, reset,
+      startTour, stopTour,
     },
   }
 }

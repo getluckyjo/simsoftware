@@ -156,7 +156,8 @@ export default function BayScreen({ state, actions, qrSvg }: { state: DemoState;
   const p = state.phase
   const tier = tierById(state.tierId)
   const showResult = (p === 'settling' || p === 'miss' || p === 'ace' || p === 'claim') && state.shot
-  const bayRunning: ChallengeSettings = p === 'refunded' && state.armed ? state.armed.event.settings : CHALLENGE_SETTINGS
+  const refused = p === 'refunded' && state.refund?.kind === 'settings'
+  const bayRunning: ChallengeSettings = refused && state.armed ? state.armed.event.settings : CHALLENGE_SETTINGS
 
   return (
     <div className="bay" ref={wrap}>
@@ -174,8 +175,8 @@ export default function BayScreen({ state, actions, qrSvg }: { state: DemoState;
         <span className={bayRunning.difficulty === 'GTOUR' ? '' : 'bad'}>{bayRunning.difficulty === 'GTOUR' ? 'G-TOUR' : bayRunning.difficulty}</span>
       </div>
 
-      {(p === 'stake' || p === 'paying' || p === 'arming' || p === 'armed' || p === 'refunded') && (
-        <SettingsPanel running={bayRunning} refused={p === 'refunded'} />
+      {(p === 'stake' || p === 'paying' || p === 'arming' || p === 'armed' || refused) && (
+        <SettingsPanel running={bayRunning} refused={refused} />
       )}
 
       {lobby && (
@@ -210,8 +211,11 @@ export default function BayScreen({ state, actions, qrSvg }: { state: DemoState;
           </button>
         </>
       )}
-      {p === 'refunded' && (
+      {refused && (
         <div className="bay-banner refused"><I.X size={16} strokeWidth={3} /> Entry refused · bay not on the challenge settings · {tier ? usd(tier.stakeUsd) : ''} refunded</div>
+      )}
+      {p === 'refunded' && !refused && (
+        <div className="bay-banner expired"><I.Clock size={16} strokeWidth={2.5} /> Entry expired · not played in {CHALLENGE.entryWindowMin} minutes · {tier ? usd(tier.stakeUsd) : ''} refunded</div>
       )}
 
       {showResult && state.shot && <ShotStrip shot={state.shot} />}

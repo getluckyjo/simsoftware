@@ -48,7 +48,7 @@ export default async function Spec() {
         <h2>What we ask GOLFZON to build</h2>
         <ol className="doc-list">
           <li><b>A locked challenge mode.</b> Set from your servers per challenge: G-Tour with no near-cup correction, a fixed tee, pin, wind, green speed and firmness, weather and altitude; no mulligans or concede. The venue cannot change it.</li>
-          <li><b>Arm a bay for a paid entry.</b> <code>POST /v0/entries</code> from us, with the bay id and the one-time code from the bay&apos;s QR.</li>
+          <li><b>Arm a bay for a paid entry.</b> <code>POST /v0/entries</code> from us, with the bay id and the one-time code from the bay&apos;s QR. <code>DELETE</code> on the same entry disarms the bay when it expires unplayed.</li>
           <li><b>Two signed webhooks.</b> <code>challenge.armed</code> with the settings the bay is really running, and <code>challenge.shot</code> with the launch data and the result. Plus <code>challenge.void</code> when the sensor did not read a ball.</li>
           <li><b>The swing video by shot id.</b> <code>GET /v0/shots/&#123;shot_id&#125;/video</code>, for claims only.</li>
           <li><b>Ace data for the insurer.</b> Ace rates by hole, tee, pin, difficulty and handicap, anonymised, so simulator prizes can be priced.</li>
@@ -76,6 +76,8 @@ const ok = verify(null, Buffer.from(\`\${t}.\${rawBody}\`),
         <h3><code>POST /v0/entries</code> · arm a bay</h3>
         <p>Sent after the stake is taken. Idempotent on <code>entry_ref</code>. GOLFZON answers <code>202</code> and then sends <code>challenge.armed</code>.</p>
         <pre className="doc-code">{JSON.stringify(entry, null, 2)}</pre>
+        <h3><code>DELETE /v0/entries/&#123;entry_ref&#125;</code> · disarm a bay</h3>
+        <p>Sent when an armed entry passes its <code>expires_at</code> unplayed. GOLFZON returns the bay to normal play; we refund the stake. A <code>challenge.shot</code> that arrives after this is a <code>409</code>, logged and ignored.</p>
         <h3><code>GET /v0/shots/&#123;shot_id&#125;/video</code> · the Nasmo clip</h3>
         <p>Called only when a claim is opened. The clip is stored with the claim.</p>
       </section>

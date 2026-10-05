@@ -28,9 +28,21 @@ The golfer pays on the phone, GOLFZON arms the bay, the golfer swings, and GOLFZ
 
 **If the venue's wifi drops, the demo carries on.** Once the page has loaded, the same checks run in the browser, and the wire says so under each message.
 
+## Sending the link
+
+Someone who opens the link with nobody presenting gets three things:
+
+- **A welcome card** on their first visit. It says what the demo is and what each pane shows, and offers **Watch the 60-second tour** or **Try it yourself**. **How it works** in the top bar brings it back.
+- **The tour.** The demo plays itself for about a minute, with a caption for each step: a $100 entry, a near miss that settles itself, a second entry that drops, and the claim file. Pressing any button on the bay or the phone, or any key, takes over from it.
+- **The guide line** under the top bar. It shows the four steps (Scan, Pay, Swing, Result), says what to press next, and offers **Make the next swing a hole in one**, so nobody needs to know about the A key. It can be closed with ×, and the browser remembers.
+
+On a phone, the panes are tabs, and the demo switches to the bay when it is armed and back to the phone once the ball has stopped.
+
+Shared in WhatsApp, Slack, iMessage or email, the link shows a preview card: the ace moment across all three panes (`public/og.jpg`).
+
 ## Running the demo in the room
 
-Open the site full screen on a laptop; 1440 × 900 or larger shows all three panes. Below 1180 px wide, the panes become tabs.
+Open https://demogolfzon.vercel.app/?present=1 full screen on a laptop. `?present=1` leaves out the welcome card and the guide line, so the screen is just the three panes. 1440 × 900 or larger shows all three panes; below 1180 px wide, they become tabs.
 
 1. **The bay is waiting.** It shows the challenge and a check-in QR code. On the phone, tap **Scan a bay**, then **Continue**.
 2. **Back yourself.** Pick a stake (**$100** wins **$100,000**), then **Pay** and **Confirm**. The wire shows three messages:
@@ -38,6 +50,7 @@ Open the site full screen on a laptop; 1440 × 900 or larger shows all three pan
    - `POST /v0/entries` asking GOLFZON to arm Bay 2;
    - GOLFZON's signed `challenge.armed`, with every check Get Lucky ran on it: signature, freshness, contract, and the bay's settings against the challenge.
 3. **Swing.** Press the **Swing** button on the bay, or the space bar. The ball flies, lands and rolls. GOLFZON then sends `challenge.shot`, and the bet moves `active → miss (actor: machine)`. The phone shows the distance and the leaderboard. Nothing is filmed or declared.
+   - An armed entry that nobody plays within 15 minutes expires. Get Lucky disarms the bay (`DELETE /v0/entries/{ref}`) and refunds the stake.
 4. **The ace, on cue.** Press **A**, then swing.
    - The claim opens itself.
    - Get Lucky fetches the swing video by shot id and asks the venue staff to confirm.
@@ -97,6 +110,8 @@ src/lib/render.ts          the bay screen: course render, the hole photo, ball f
 src/app/api/v0/…           the endpoint GOLFZON would call, the JWKS, the challenge
 src/app/spec/page.tsx      the contract as a page, with live signed examples
 src/components/useDemo.ts  the flow between the three panes
+src/components/GuideBar.tsx the guide line, and the tour's captions
+src/components/Welcome.tsx  the card a first visit opens on
 __tests__/                 vitest
 ```
 
