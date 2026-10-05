@@ -12,7 +12,7 @@ import { BAY, CHALLENGE, CHALLENGE_SETTINGS, TOP_PRIZE_USD, tierById } from '@/l
 import { deg, LIE_LABEL, mph, rpm, toPin, usd, yards } from '@/lib/format'
 import type { ChallengeSettings } from '@/lib/protocol'
 import {
-  ATTRACT_IMG, HOLE_IMG, WIDE_VIEW, ballOnGround, clamp01, drawAttract, drawHole, easeInOut, flightPoint, greenView,
+  ATTRACT_IMG, HOLE_IMG, WIDE_VIEW, ballOnGround, clamp01, drawAttract, drawGrade, drawHole, easeInOut, flightPoint, greenView,
   groundPx, lerpView, rollWorld, shotView, type View,
 } from '@/lib/render'
 import type { Pt } from '@/lib/course'
@@ -26,6 +26,7 @@ const FLIGHT_S = 3.2
 const PUSH_FROM = 0.45
 const FADE_MS = 700
 const ZOOM_OUT_MS = 900
+const PIN_TAG = yards(CHALLENGE.distance_m)
 
 interface Anim { key: number; shot?: SimulatedShot; start: number; notified: boolean; trail: Pt[]; clearedAt: number; lastClose?: View }
 type Scene = 'attract' | 'hole'
@@ -87,7 +88,7 @@ export default function BayScreen({ state, actions, qrSvg }: { state: DemoState;
       const shot = a.shot
       if (!shot) {
         const k = easeInOut(clamp01((t - a.clearedAt) / ZOOM_OUT_MS))
-        drawHole(ctx, imgs.hole, w, h, lerpView(a.lastClose ?? greenView(w, h), WIDE_VIEW, k), { time })
+        drawHole(ctx, imgs.hole, w, h, lerpView(a.lastClose ?? greenView(w, h), WIDE_VIEW, k), { time, pinTag: PIN_TAG })
         return
       }
       const close = shotView(w, h, shot)
@@ -114,7 +115,7 @@ export default function BayScreen({ state, actions, qrSvg }: { state: DemoState;
         const { p, hop } = rollWorld(shot, s)
         const g = ballOnGround(p, hop)
         const sink = shot.holed && s > 0.9 ? (s - 0.9) / 0.1 : 0
-        drawHole(ctx, imgs.hole, w, h, close, { time, ball: { pt: g.pt, r: 1.6, lift: g.lift, shadow: true }, landing: landPx, sink, trail: a.trail.slice(-10) })
+        drawHole(ctx, imgs.hole, w, h, close, { time, ball: { pt: g.pt, r: 1.6, lift: g.lift, shadow: true }, landing: landPx, impact: e - FLIGHT_S, sink, trail: a.trail.slice(-10) })
         return
       }
       const gone = shot.holed || shot.lie === 'water'
@@ -122,6 +123,7 @@ export default function BayScreen({ state, actions, qrSvg }: { state: DemoState;
         time,
         ball: { pt: groundPx(shot.rest), r: 1.6, shadow: true },
         sink: gone ? 1 : 0,
+        holedFor: shot.holed ? e - FLIGHT_S - rollS : undefined,
         landing: landPx,
         distanceLabel: gone ? undefined : toPin(shot.distanceToPinCm),
       })
@@ -148,6 +150,7 @@ export default function BayScreen({ state, actions, qrSvg }: { state: DemoState;
       } else {
         draw(sc.now, t, time)
       }
+      drawGrade(ctx, w, h)
     }
     raf = requestAnimationFrame(frame)
     return () => { cancelAnimationFrame(raf); ro.disconnect() }
@@ -156,7 +159,8 @@ export default function BayScreen({ state, actions, qrSvg }: { state: DemoState;
   const p = state.phase
   const tier = tierById(state.tierId)
   const showResult = (p === 'settling' || p === 'miss' || p === 'ace' || p === 'claim') && state.shot
-  const bayRunning: ChallengeSettings = p === 'refunded' && state.armed ? state.armed.event.settings : CHALLENGE_SETTINGS
+  const refused = p === 'refunded' && state.refund?.kind === 'settings'
+  const bayRunning: ChallengeSettings = refused && state.armed ? state.armed.event.settings : CHALLENGE_SETTINGS
 
   return (
     <div className="bay" ref={wrap}>
@@ -174,8 +178,8 @@ export default function BayScreen({ state, actions, qrSvg }: { state: DemoState;
         <span className={bayRunning.difficulty === 'GTOUR' ? '' : 'bad'}>{bayRunning.difficulty === 'GTOUR' ? 'G-TOUR' : bayRunning.difficulty}</span>
       </div>
 
-      {(p === 'stake' || p === 'paying' || p === 'arming' || p === 'armed' || p === 'refunded') && (
-        <SettingsPanel running={bayRunning} refused={p === 'refunded'} />
+      {(p === 'stake' || p === 'paying' || p === 'arming' || p === 'armed' || refused) && (
+        <SettingsPanel running={bayRunning} refused={refused} />
       )}
 
       {lobby && (
@@ -210,8 +214,11 @@ export default function BayScreen({ state, actions, qrSvg }: { state: DemoState;
           </button>
         </>
       )}
-      {p === 'refunded' && (
+      {refused && (
         <div className="bay-banner refused"><I.X size={16} strokeWidth={3} /> Entry refused · bay not on the challenge settings · {tier ? usd(tier.stakeUsd) : ''} refunded</div>
+      )}
+      {p === 'refunded' && !refused && (
+        <div className="bay-banner expired"><I.Clock size={16} strokeWidth={2.5} /> Entry expired · not played in {CHALLENGE.entryWindowMin} minutes · {tier ? usd(tier.stakeUsd) : ''} refunded</div>
       )}
 
       {showResult && state.shot && <ShotStrip shot={state.shot} />}

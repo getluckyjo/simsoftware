@@ -127,6 +127,7 @@ Keep it to five things. The field names are ours and open to theirs.
 **Get Lucky → Golfzon:**
 
 - `POST /entries`: arm a bay for a paid entry. The body holds the bay, the nonce from the QR, `entry_ref`, the tier and an expiry. The call is idempotent on `entry_ref`.
+- `DELETE /entries/{entry_ref}`: disarm the bay when an entry expires unplayed. We refund the stake.
 - `GET /shots/{shot_id}/video`: the Nasmo clip, for claims only.
 
 **Two design points to hold firm on:**

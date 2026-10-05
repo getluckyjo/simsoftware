@@ -55,23 +55,31 @@ export const LOWERED_SETTINGS: ChallengeSettings = {
 }
 
 export const CHALLENGE = {
-  challenge_id: 'gl-2026-w41',
+  /** Stable, so a link opened in any week signs and verifies the same. */
+  challenge_id: 'gl-gz-hole-7',
   label: 'Hole of the week',
-  week: 41,
   course: 'Get Lucky Demo Links',
   hole: 7,
   par: 3 as const,
   tee: 'Black',
-  /** Tee to pin. 170 yards over water: a par 3 over the 140 m the on-course challenge requires. */
-  distance_m: 155.4,
-  /** Tee at the origin, y down the hole, x to the right. The pin is left, where the photo's flag is (src/lib/course.ts). */
-  pin: { x_m: -10.4, y_m: 155 },
-  pinLabel: 'Left',
+  /** Tee to pin. 164 yards over water: a par 3 over the 140 m the on-course challenge requires. */
+  distance_m: 150,
+  /** Tee at the origin, y down the hole, x to the right. The pin is in the middle of the green (src/lib/course.ts). */
+  pin: { x_m: 0, y_m: 150 },
+  pinLabel: 'Middle',
   settings: CHALLENGE_SETTINGS,
-  valid_from: '2026-10-05T00:00:00Z',
-  valid_to: '2026-10-11T23:59:59Z',
   /** Minutes a paid entry stays armed before it is refunded. */
   entryWindowMin: 15,
+}
+
+/** The challenge runs Monday to Sunday (UTC); this is the week that contains `at`. */
+export function challengeWeek(at: Date): { valid_from: string; valid_to: string } {
+  const day = (at.getUTCDay() + 6) % 7
+  const from = Date.UTC(at.getUTCFullYear(), at.getUTCMonth(), at.getUTCDate() - day)
+  return {
+    valid_from: new Date(from).toISOString(),
+    valid_to: new Date(from + 7 * 86_400_000 - 1000).toISOString(),
+  }
 }
 
 export const VENUE = { id: 'GZ-DEMO-01', name: 'Demo venue' }

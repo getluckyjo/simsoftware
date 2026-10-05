@@ -1,11 +1,24 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
+const TITLE = 'Get Lucky × GOLFZON · live demo'
+const DESCRIPTION = 'One swing at a GOLFZON bay, up to $100,000 if it drops. GOLFZON\'s signed shot record settles every entry. A working demo of the proposed integration.'
+
 export const metadata: Metadata = {
-  title: 'Get Lucky × GOLFZON · live demo',
-  description: 'The insured hole-in-one challenge on a GOLFZON bay, with the simulator as the verifier. A working demo of the proposed integration.',
+  metadataBase: new URL('https://demogolfzon.vercel.app'),
+  title: TITLE,
+  description: DESCRIPTION,
   robots: { index: false, follow: false },
   icons: { icon: '/favicon.png' },
+  // The preview card when the link is shared in WhatsApp, Slack, email or iMessage.
+  openGraph: {
+    type: 'website',
+    siteName: 'Get Lucky Golf',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'The demo: a GOLFZON bay, the messages between GOLFZON and Get Lucky, and the Get Lucky app' }],
+  },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: ['/og.jpg'] },
 }
 
 export const viewport: Viewport = { themeColor: '#0f1a11' }
