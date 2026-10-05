@@ -79,7 +79,7 @@ Live on Vercel as the `demogolfzon` project in the Get Lucky team:
 - https://demogolfzon.vercel.app (public, no Vercel login, like the pitch sites)
 - https://demogolfzon.virgingolf.co.za once DNS is set: a CNAME `demogolfzon` → `c695567fa1b0f9a0.vercel-dns-016.com` in the GoDaddy DNS for virgingolf.co.za, the same record `golfzon` and `pitch` use
 
-The project is linked to this repo with `main` as its production branch, but the demo lives on `claude/golfzon-golf-integration-8o5bb3`, so production was deployed from that branch by hand. Pushes to the branch make preview deployments only. Until the branch is merged to `main`, promote a new version by redeploying the latest branch commit to production (Vercel dashboard → Deployments → the preview → Promote). A push to `main` before the merge would replace the demo with whatever is on `main`.
+The project is linked to this repo with `main` as its production branch: every push to `main` deploys the live demo, and every other branch gets a preview deployment of its own. Make changes on a branch, check the preview, then merge.
 
 No environment variables are needed. Every response carries `X-Robots-Tag: noindex`. `.npmrc` sets `legacy-peer-deps` because npm 10's resolver crashes on Next 16's optional peers without it.
 
