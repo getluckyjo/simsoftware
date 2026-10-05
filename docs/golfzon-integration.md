@@ -212,8 +212,8 @@ own service if Level 2 happens.
 
 A live demo on one screen, built in this repo; `README.md` has the run of
 show. It needs no Golfzon access, because we play Golfzon's side with the
-contract from section 6. Prices are in US dollars: $1, $5, $20 and $50 a
-swing, each paying 1,000×, up to $50,000.
+contract from section 6. Prices are in US dollars: $1, $5, $20, $50 and
+$100 a swing, each paying 1,000×, up to $100,000 for $100.
 
 - **Left, the bay:** a Golfzon-style challenge screen.
   - It shows the hole, the locked settings panel and the check-in QR.

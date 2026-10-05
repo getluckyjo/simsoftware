@@ -12,7 +12,7 @@ There are three panes on one screen:
 - **Middle:** every message between GOLFZON and Get Lucky.
 - **Right:** the Get Lucky app.
 
-The golfer pays on the phone, GOLFZON arms the bay, the golfer swings, and GOLFZON sends a signed record of the shot. Get Lucky verifies the record and settles the entry. A miss goes on the leaderboard. An ace opens a claim. Prices are in US dollars.
+The golfer pays on the phone, GOLFZON arms the bay, the golfer swings, and GOLFZON sends a signed record of the shot. Get Lucky verifies the record and settles the entry. A miss goes on the leaderboard. An ace opens a claim. Prices are in US dollars: $1 to $100 a swing, each paying 1,000×, up to $100,000 for $100.
 
 ## What is real and what is simulated
 
@@ -20,7 +20,7 @@ The golfer pays on the phone, GOLFZON arms the bay, the golfer swings, and GOLFZ
 |---|---|
 | The v0.1 contract (`src/lib/protocol.ts`) | GOLFZON's side. It runs in the browser and signs with a demo key we made (`src/lib/golfzon-mock.ts`) |
 | Ed25519 signing and verification | The shot and its physics (`src/lib/shot.ts`) |
-| The endpoint GOLFZON would call, `POST /api/v0/golfzon/events`, which checks signatures with Node's crypto | The bay graphics (`src/lib/render.ts`). They are an illustration, not GOLFZON software, and the screen says so |
+| The endpoint GOLFZON would call, `POST /api/v0/golfzon/events`, which checks signatures with Node's crypto | The bay screen. While it waits it plays a GOLFZON course render; once a golfer checks in it shows the challenge hole, an aerial photograph of a par 3 over water, with the ball, flag and distance drawn over it (`public/bay/`, `src/lib/render.ts`). The course images are for illustration, and the screen says so |
 | The receiver's rules: signature, freshness, shape, settings lock, one shot per entry, duplicate events | Payments: sandbox copy, and nothing is charged |
 | The claim file's re-verification in the browser, and the evidence pack with its SHA-256 | The Nasmo video and the leaderboard players |
 
@@ -33,7 +33,7 @@ The golfer pays on the phone, GOLFZON arms the bay, the golfer swings, and GOLFZ
 Open the site full screen on a laptop; 1440 × 900 or larger shows all three panes. Below 1180 px wide, the panes become tabs.
 
 1. **The bay is waiting.** It shows the challenge and a check-in QR code. On the phone, tap **Scan a bay**, then **Continue**.
-2. **Back yourself.** Pick **$5**, then **Pay $5** and **Confirm**. The wire shows three messages:
+2. **Back yourself.** Pick a stake (**$100** wins **$100,000**), then **Pay** and **Confirm**. The wire shows three messages:
    - the charge;
    - `POST /v0/entries` asking GOLFZON to arm Bay 2;
    - GOLFZON's signed `challenge.armed`, with every check Get Lucky ran on it: signature, freshness, contract, and the bay's settings against the challenge.
@@ -92,7 +92,8 @@ src/lib/golfzon-mock.ts    GOLFZON's side for the demo: arm the bay, report the 
 src/lib/keys.ts            GOLFZON's published keys (the demo key's public half)
 src/lib/challenge.ts       this week's hole, its locked settings, the bay, the $ tiers
 src/lib/shot.ts            the shot model (launch data from where the ball lands)
-src/lib/render.ts          the bay screen: tee camera, green camera, ball flight
+src/lib/course.ts          the hole, traced from the bay photo, and the photo ↔ ground mapping
+src/lib/render.ts          the bay screen: course render, the hole photo, ball flight and push-in
 src/app/api/v0/…           the endpoint GOLFZON would call, the JWKS, the challenge
 src/app/spec/page.tsx      the contract as a page, with live signed examples
 src/components/useDemo.ts  the flow between the three panes

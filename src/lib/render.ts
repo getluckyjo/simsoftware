@@ -1,375 +1,222 @@
 /**
- * Draws the demo bay screen on a canvas: a tee camera that follows the
- * ball up, and a green camera for the landing and roll. Plain perspective
- * projection with near-plane clipping; painter's order for trees, flag and
- * ball. It is an illustration of a simulator screen, not Golfzon software.
+ * Draws the bay screen on a canvas from two photographs:
+ *
+ *   attract  a GOLFZON course render, while the bay waits for a golfer
+ *   hole     the challenge hole, a par 3 over water; the ball flies in from
+ *            the tee below the frame, the view pushes in on the green as it
+ *            comes down, and it lands and rolls where the shot model says
+ *
+ * Positions on the ground go through the homography in ./course.ts, so the
+ * ball, the pin and the distance line sit where they are on the photo. The
+ * flight itself is a screen-space arc (the tee is behind the camera).
  */
 import { CHALLENGE } from './challenge'
-import { APPROACH, BUNKERS, ellipsePoints, FRINGE, GREEN, TREES, WATER, type Ellipse, type Pt } from './course'
+import { PHOTO_SIZE, photoScaleAt, worldToPhoto, type Pt } from './course'
 import type { SimulatedShot } from './shot'
 
-export type V3 = [number, number, number]
+export const ATTRACT_IMG = { src: '/bay/attract.jpg', w: 1377, h: 687 }
+export const HOLE_IMG = { src: '/bay/hole-7.jpg', w: PHOTO_SIZE.w, h: PHOTO_SIZE.h }
 
-export interface Camera { pos: V3; fwd: V3; right: V3; up: V3; f: number; cx: number; cy: number }
-
-const sub = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]]
-const dot = (a: V3, b: V3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
-const cross = (a: V3, b: V3): V3 => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
-const norm = (a: V3): V3 => { const l = Math.hypot(...a) || 1; return [a[0] / l, a[1] / l, a[2] / l] }
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t
-const lerp3 = (a: V3, b: V3, t: number): V3 => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)]
-const NEAR = 0.5
-
-function lookAt(pos: V3, target: V3, f: number, cx: number, cy: number): Camera {
-  const fwd = norm(sub(target, pos))
-  const right = norm(cross(fwd, [0, 0, 1]))
-  const up = cross(right, fwd)
-  return { pos, fwd, right, up, f, cx, cy }
-}
-
-function toCam(c: Camera, p: V3): V3 {
-  const v = sub(p, c.pos)
-  return [dot(v, c.right), dot(v, c.up), dot(v, c.fwd)]
-}
-
-function camToScreen(c: Camera, v: V3): [number, number] {
-  return [c.cx + (c.f * v[0]) / v[2], c.cy - (c.f * v[1]) / v[2]]
-}
-
-function project(c: Camera, p: V3): [number, number, number] | null {
-  const v = toCam(c, p)
-  if (v[2] < NEAR) return null
-  const [x, y] = camToScreen(c, v)
-  return [x, y, v[2]]
-}
-
-/** Project a ground polygon, clipped against the near plane. */
-function projectPoly(c: Camera, pts: Pt[], z = 0): [number, number][] {
-  const cam = pts.map(p => toCam(c, [p[0], p[1], z]))
-  const out: V3[] = []
-  for (let i = 0; i < cam.length; i++) {
-    const a = cam[i], b = cam[(i + 1) % cam.length]
-    const ain = a[2] >= NEAR, bin = b[2] >= NEAR
-    if (ain) out.push(a)
-    if (ain !== bin) {
-      const t = (NEAR - a[2]) / (b[2] - a[2])
-      out.push([lerp(a[0], b[0], t), lerp(a[1], b[1], t), NEAR])
-    }
-  }
-  return out.map(v => camToScreen(c, v))
-}
-
-function fillPoly(ctx: CanvasRenderingContext2D, pts: [number, number][], fill: string | CanvasGradient, stroke?: string, lw = 1) {
-  if (pts.length < 3) return
-  ctx.beginPath()
-  ctx.moveTo(pts[0][0], pts[0][1])
-  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1])
-  ctx.closePath()
-  ctx.fillStyle = fill
-  ctx.fill()
-  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.stroke() }
-}
+/** What part of a photo is on screen: a focus point in photo pixels and a zoom over "cover". */
+export interface View { cx: number; cy: number; zoom: number }
+interface Xform { s: number; ox: number; oy: number }
 
 const PIN: Pt = [CHALLENGE.pin.x_m, CHALLENGE.pin.y_m]
+export const PIN_PX: Pt = worldToPhoto(PIN)
+const GREEN_CENTRE_PX: Pt = [326, 392]
 
-// ── Cameras ─────────────────────────────────────────────────────────────
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+const clamp01 = (t: number) => Math.min(1, Math.max(0, t))
+export const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2)
 
-export function teeCamera(w: number, h: number, track?: { ball: V3; weight: number }): Camera {
-  const base: V3 = [0, 150, 0]
-  const target = track ? lerp3(base, [track.ball[0] * 0.5, lerp(150, track.ball[1], 0.35), track.ball[2] * 0.85], track.weight) : base
-  return lookAt([0, -4, 16], target, Math.min(w * 2.15, h * 3.6), w / 2, h * 0.5)
+export const WIDE_VIEW: View = { cx: 360, cy: 330, zoom: 1 }
+
+/** Close on the green: wide enough for the bunkers behind it and the wall in front. */
+export function greenView(w: number, h: number): View {
+  const s0 = Math.max(w / HOLE_IMG.w, h / HOLE_IMG.h)
+  const zoom = Math.max(1, Math.min(2, w / (s0 * 430), h / (s0 * 230)))
+  return { cx: GREEN_CENTRE_PX[0], cy: GREEN_CENTRE_PX[1], zoom }
 }
 
-/** Framed on a ball that finished away from the green (short, wide, wet). */
-export function lookAtFor(rest: Pt, w: number, h: number): Camera {
-  return lookAt([rest[0] + 6, rest[1] - 24, 10], [rest[0] * 0.8 + PIN[0] * 0.2, rest[1] + 5, 0], Math.min(w * 1.05, h * 1.9), w / 2, h * 0.52)
+/** Close on what matters for this shot: the flag and wherever the ball came down and stopped. */
+export function shotView(w: number, h: number, shot: SimulatedShot): View {
+  const pts = [PIN_PX, [PIN_PX[0], PIN_PX[1] - 30] as Pt, groundPx(shot.landing), groundPx(shot.rest)]
+  const xs = pts.map(p => p[0]), ys = pts.map(p => p[1])
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys)
+  const s0 = Math.max(w / HOLE_IMG.w, h / HOLE_IMG.h)
+  const zoom = Math.max(1, Math.min(1.85, w / (s0 * (x1 - x0 + 300)), h / (s0 * (y1 - y0 + 220))))
+  return { cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, zoom }
 }
 
-export function greenCamera(w: number, h: number): Camera {
-  return lookAt([8, 124, 11], [PIN[0] * 0.5, 151.5, 0], Math.min(w * 1.05, h * 1.9), w / 2, h * 0.52)
+export function lerpView(a: View, b: View, t: number): View {
+  return { cx: lerp(a.cx, b.cx, t), cy: lerp(a.cy, b.cy, t), zoom: lerp(a.zoom, b.zoom, t) }
 }
 
-// ── Ball path ───────────────────────────────────────────────────────────
-
-/** Position in flight, t from 0 (struck) to 1 (landing). */
-export function flightPos(shot: SimulatedShot, t: number): V3 {
-  const [lx, ly] = shot.landing
-  const s = shot.startLineX, curve = lx - s
-  const y = ly * (1 - Math.pow(1 - t, 1.3))
-  const u = Math.pow(t, 1.25)
-  return [s * t + curve * t * t, y, shot.apexM * 4 * u * (1 - u)]
+function cover(img: { w: number; h: number }, v: View, w: number, h: number): Xform {
+  const s = Math.max(w / img.w, h / img.h) * v.zoom
+  const ox = Math.min(0, Math.max(w - img.w * s, w / 2 - v.cx * s))
+  const oy = Math.min(0, Math.max(h - img.h * s, h / 2 - v.cy * s))
+  return { s, ox, oy }
 }
 
-/** Position while bouncing and rolling out, s from 0 (landing) to 1 (rest). */
-export function rollPos(shot: SimulatedShot, s: number): V3 {
+const toCanvas = (x: Xform, p: Pt): Pt => [p[0] * x.s + x.ox, p[1] * x.s + x.oy]
+
+function drawPhoto(ctx: CanvasRenderingContext2D, img: HTMLImageElement | undefined, size: { w: number; h: number }, x: Xform) {
+  if (img && img.complete && img.naturalWidth > 0) ctx.drawImage(img, x.ox, x.oy, size.w * x.s, size.h * x.s)
+  else { ctx.fillStyle = '#3b6a31'; ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height) }
+}
+
+/** The waiting screen: the course render with a slow drift, as a bay's attract loop does. */
+export function drawAttract(ctx: CanvasRenderingContext2D, img: HTMLImageElement | undefined, w: number, h: number, time: number) {
+  const v: View = { cx: 690 + Math.sin(time * 0.09) * 60, cy: 360, zoom: 1.06 + Math.sin(time * 0.13) * 0.04 }
+  drawPhoto(ctx, img, ATTRACT_IMG, cover(ATTRACT_IMG, v, w, h))
+}
+
+// ── The shot on the photo ───────────────────────────────────────────────
+
+/** Where a ball on the ground appears on the photo, kept inside the frame. */
+export function groundPx(p: Pt): Pt {
+  const [x, y] = worldToPhoto(p)
+  return [Math.min(HOLE_IMG.w - 2, Math.max(2, x)), Math.min(HOLE_IMG.h - 2, Math.max(2, y))]
+}
+
+/** In flight, t from 0 (struck, below the frame) to 1 (landing). Photo pixels, and the ball's radius in photo pixels. */
+export function flightPoint(shot: SimulatedShot, t: number): { pt: Pt; r: number } {
+  const L = groundPx(shot.landing)
+  const S: Pt = [420, 700]
+  const P1: Pt = [S[0] + (L[0] - S[0]) * 0.25, S[1] - 620 - (shot.apexM - 26) * 6]
+  const P2: Pt = [L[0] + (S[0] - L[0]) * 0.06, L[1] - 300]
+  const u = 1 - t
+  const pt: Pt = [
+    u ** 3 * S[0] + 3 * u * u * t * P1[0] + 3 * u * t * t * P2[0] + t ** 3 * L[0],
+    u ** 3 * S[1] + 3 * u * u * t * P1[1] + 3 * u * t * t * P2[1] + t ** 3 * L[1],
+  ]
+  return { pt, r: lerp(7, 1.6, Math.pow(t, 0.6)) }
+}
+
+/** Bouncing and rolling out, s from 0 (landing) to 1 (rest). Ground position in metres and the hop in metres. */
+export function rollWorld(shot: SimulatedShot, s: number): { p: Pt; hop: number } {
   const [lx, ly] = shot.landing, [rx, ry] = shot.rest
   const hop = s < 0.28 ? shot.bounceM * 4 * (s / 0.28) * (1 - s / 0.28) : 0
-  const m = s < 0.12 ? 0 : 1 - Math.pow(1 - (s - 0.12) / 0.88, 3)
-  const k = lerp(0.08, 1, m)
-  return [lerp(lx, rx, s < 0.12 ? s * 0.6 : k), lerp(ly, ry, s < 0.12 ? s * 0.6 : k), hop]
+  const k = s < 0.12 ? s * 0.6 : lerp(0.08, 1, 1 - Math.pow(1 - (s - 0.12) / 0.88, 3))
+  return { p: [lerp(lx, rx, k), lerp(ly, ry, k)], hop }
 }
 
-// ── Scene ───────────────────────────────────────────────────────────────
-
-export interface SceneState {
+export interface HoleOverlay {
   time: number
-  ball?: V3
-  trail?: V3[]
-  /** 0..1 fade for the landing mark. */
+  /** The ball in photo pixels, its radius in photo pixels, and how far it is lifted off the ground in photo pixels. */
+  ball?: { pt: Pt; r: number; lift?: number; shadow?: boolean }
+  trail?: Pt[]
   landing?: Pt
-  /** Show the dashed line and label from the ball to the pin. */
   distanceLabel?: string
   /** 0..1, the ball dropping into the cup. */
   sink?: number
-  /** Seconds since a ball went in the water. */
+  /** Seconds since the ball went in the water. */
   splash?: number
 }
 
-const SKY_TOP = '#6fa3cf', SKY_LOW = '#d9e8ef'
+export function drawHole(ctx: CanvasRenderingContext2D, img: HTMLImageElement | undefined, w: number, h: number, view: View, o: HoleOverlay) {
+  const x = cover(HOLE_IMG, view, w, h)
+  drawPhoto(ctx, img, HOLE_IMG, x)
 
-function drawSky(ctx: CanvasRenderingContext2D, cam: Camera, w: number, h: number): number {
-  const horizon = cam.fwd[1] > 0 ? cam.cy - (cam.f * cam.up[1]) / cam.fwd[1] : -1
-  const gy = Math.max(0, Math.min(h, horizon))
-  const ground = ctx.createLinearGradient(0, gy, 0, h)
-  ground.addColorStop(0, '#7f9f78')
-  ground.addColorStop(0.08, '#56834a')
-  ground.addColorStop(1, '#3b6a31')
-  ctx.fillStyle = ground
-  ctx.fillRect(0, 0, w, h)
-  if (horizon > 0) {
-    const sky = ctx.createLinearGradient(0, 0, 0, horizon)
-    sky.addColorStop(0, SKY_TOP)
-    sky.addColorStop(1, SKY_LOW)
-    ctx.fillStyle = sky
-    ctx.fillRect(0, 0, w, horizon + 1)
-  }
-  return horizon
-}
+  const pinScale = photoScaleAt(PIN) * x.s
+  const pin = toCanvas(x, PIN_PX)
 
-function drawHills(ctx: CanvasRenderingContext2D, cam: Camera) {
-  for (const [dist, tone, amp] of [[900, '#8fa89c', 70], [520, '#6f8f76', 38]] as const) {
-    const pts: V3[] = []
-    for (let x = -1400; x <= 1400; x += 70) pts.push([x, dist, amp * (0.55 + 0.45 * Math.sin(x / 190 + dist) * Math.cos(x / 83))])
-    const top = pts.map(p => project(cam, p)).filter((p): p is [number, number, number] => !!p)
-    const base = [...pts].reverse().map(p => project(cam, [p[0], p[1], 0])).filter((p): p is [number, number, number] => !!p)
-    fillPoly(ctx, [...top, ...base].map(p => [p[0], p[1]]), tone)
-  }
-}
-
-function drawEllipse(ctx: CanvasRenderingContext2D, cam: Camera, e: Ellipse, fill: string | CanvasGradient, stroke?: string) {
-  fillPoly(ctx, projectPoly(cam, ellipsePoints(e, 56)), fill, stroke)
-}
-
-function drawGreen(ctx: CanvasRenderingContext2D, cam: Camera) {
-  drawEllipse(ctx, cam, APPROACH, '#5c9a45')
-  drawEllipse(ctx, cam, FRINGE, '#4f9140')
-  const pts = projectPoly(cam, ellipsePoints(GREEN, 72))
-  if (pts.length < 3) return
-  fillPoly(ctx, pts, '#72b852')
-  ctx.save()
-  ctx.beginPath()
-  ctx.moveTo(pts[0][0], pts[0][1])
-  for (const p of pts.slice(1)) ctx.lineTo(p[0], p[1])
-  ctx.closePath()
-  ctx.clip()
-  // Mowing stripes across the line of play.
-  for (let y = GREEN.cy - GREEN.ry; y < GREEN.cy + GREEN.ry; y += 3.2) {
-    const band = projectPoly(cam, [[-20, y], [20, y], [20, y + 1.6], [-20, y + 1.6]])
-    fillPoly(ctx, band, 'rgba(255,255,255,0.07)')
-  }
-  ctx.restore()
-}
-
-function drawBunkers(ctx: CanvasRenderingContext2D, cam: Camera) {
-  for (const b of BUNKERS) {
-    drawEllipse(ctx, cam, { ...b, rx: b.rx + 0.35, ry: b.ry + 0.35 }, '#9c8c5f')
-    drawEllipse(ctx, cam, b, '#e6d6a8')
-  }
-}
-
-function drawWater(ctx: CanvasRenderingContext2D, cam: Camera, time: number) {
-  const pts = projectPoly(cam, WATER)
-  if (pts.length < 3) return
-  const ys = pts.map(p => p[1])
-  const g = ctx.createLinearGradient(0, Math.min(...ys), 0, Math.max(...ys))
-  g.addColorStop(0, '#5c9ec4')
-  g.addColorStop(1, '#2f6f98')
-  fillPoly(ctx, pts, g, 'rgba(20,50,40,0.45)', 2)
-  ctx.save()
-  ctx.clip()
-  ctx.strokeStyle = 'rgba(255,255,255,0.18)'
-  ctx.lineWidth = 1
-  for (let y = 96; y < 130; y += 3) {
-    const off = Math.sin(time * 0.8 + y) * 2
-    const line = [project(cam, [-30 + off, y, 0]), project(cam, [22 + off, y, 0])]
-    if (line[0] && line[1]) { ctx.beginPath(); ctx.moveTo(line[0][0], line[0][1]); ctx.lineTo(line[1][0], line[1][1]); ctx.stroke() }
-  }
-  ctx.restore()
-}
-
-type Drawable = { z: number; draw: () => void }
-
-function treeDrawable(ctx: CanvasRenderingContext2D, cam: Camera, t: (typeof TREES)[number]): Drawable | null {
-  const base = project(cam, [t.x, t.y, 0])
-  const crown = project(cam, [t.x, t.y, t.h * 0.62])
-  if (!base || !crown) return null
-  const r = (cam.f * t.r) / crown[2]
-  if (r < 0.6) return null
-  const shade = t.tone
-  return {
-    z: crown[2],
-    draw: () => {
-      ctx.strokeStyle = '#4a3b2b'
-      ctx.lineWidth = Math.max(1, (cam.f * 0.45) / base[2])
-      ctx.beginPath(); ctx.moveTo(base[0], base[1]); ctx.lineTo(crown[0], crown[1]); ctx.stroke()
-      const dark = `hsl(${105 + shade * 20}, ${32 + shade * 10}%, ${19 + shade * 8}%)`
-      const light = `hsl(${100 + shade * 20}, ${35 + shade * 10}%, ${27 + shade * 8}%)`
-      ctx.fillStyle = dark
-      for (const [dx, dy, s] of [[0, 0, 1], [-0.55, 0.35, 0.72], [0.55, 0.3, 0.7], [0, 0.75, 0.62]] as const) {
-        ctx.beginPath(); ctx.arc(crown[0] + dx * r, crown[1] - dy * r, r * s, 0, Math.PI * 2); ctx.fill()
-      }
-      ctx.fillStyle = light
-      ctx.beginPath(); ctx.arc(crown[0] - r * 0.25, crown[1] - r * 0.55, r * 0.45, 0, Math.PI * 2); ctx.fill()
-    },
-  }
-}
-
-function flagDrawable(ctx: CanvasRenderingContext2D, cam: Camera, time: number): Drawable | null {
-  const foot = project(cam, [PIN[0], PIN[1], 0])
-  const top = project(cam, [PIN[0], PIN[1], 2.3])
-  if (!foot || !top) return null
-  const wave = Math.sin(time * 3.2) * 0.12
-  const tip = project(cam, [PIN[0] + 0.95, PIN[1] + wave, 2.05 + wave * 0.3])
-  const low = project(cam, [PIN[0], PIN[1], 1.8])
-  return {
-    z: foot[2],
-    draw: () => {
-      const cup = projectPoly(cam, ellipsePoints({ cx: PIN[0], cy: PIN[1], rx: 0.13, ry: 0.13 }, 16))
-      fillPoly(ctx, cup, '#1c2a1a')
-      ctx.strokeStyle = '#f7f7f2'
-      ctx.lineWidth = Math.max(1.2, (cam.f * 0.03) / foot[2])
-      ctx.beginPath(); ctx.moveTo(foot[0], foot[1]); ctx.lineTo(top[0], top[1]); ctx.stroke()
-      if (tip && low) fillPoly(ctx, [[top[0], top[1]], [tip[0], tip[1]], [low[0], low[1]]], '#e4412b')
-    },
-  }
-}
-
-function ballDrawables(ctx: CanvasRenderingContext2D, cam: Camera, s: SceneState): Drawable[] {
-  const out: Drawable[] = []
-  if (s.trail && s.trail.length > 1) {
-    const pts = s.trail.map(p => project(cam, p)).filter((p): p is [number, number, number] => !!p)
-    if (pts.length > 1) {
-      out.push({
-        z: -1, // tracer on top of everything
-        draw: () => {
-          ctx.lineCap = 'round'
-          for (let i = 1; i < pts.length; i++) {
-            const a = i / pts.length
-            ctx.strokeStyle = `rgba(255, 244, 196, ${0.15 + a * 0.75})`
-            ctx.lineWidth = 1.5 + a * 1.8
-            ctx.beginPath(); ctx.moveTo(pts[i - 1][0], pts[i - 1][1]); ctx.lineTo(pts[i][0], pts[i][1]); ctx.stroke()
-          }
-        },
-      })
-    }
-  }
-  if (s.ball) {
-    const b = s.ball
-    const p = project(cam, b)
-    const shadow = project(cam, [b[0], b[1], 0])
-    const sink = s.sink ?? 0
-    if (p && sink < 1) {
-      const r = Math.max(2.6, (cam.f * 0.07) / p[2]) * (1 - sink)
-      out.push({
-        z: -2,
-        draw: () => {
-          if (shadow) {
-            ctx.fillStyle = `rgba(0,0,0,${0.35 * (1 - Math.min(1, b[2] / 30))})`
-            ctx.beginPath(); ctx.ellipse(shadow[0], shadow[1], r * 1.1, r * 0.45, 0, 0, Math.PI * 2); ctx.fill()
-          }
-          const glow = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], r * 3)
-          glow.addColorStop(0, 'rgba(255,255,255,0.55)')
-          glow.addColorStop(1, 'rgba(255,255,255,0)')
-          ctx.fillStyle = glow
-          ctx.beginPath(); ctx.arc(p[0], p[1], r * 3, 0, Math.PI * 2); ctx.fill()
-          ctx.fillStyle = '#ffffff'
-          ctx.beginPath(); ctx.arc(p[0], p[1], r, 0, Math.PI * 2); ctx.fill()
-        },
-      })
-    }
-  }
-  return out
-}
-
-export function drawScene(ctx: CanvasRenderingContext2D, cam: Camera, w: number, h: number, s: SceneState) {
-  ctx.clearRect(0, 0, w, h)
-  drawSky(ctx, cam, w, h)
-  drawHills(ctx, cam)
-  // The mown carry from the tee to the water, and a collar round the green: depth cues for the eye.
-  fillPoly(ctx, projectPoly(cam, [[-8, 12], [8, 12], [15, 92], [-17, 92]]), 'rgba(120,170,90,0.13)')
-  fillPoly(ctx, projectPoly(cam, ellipsePoints({ cx: 0, cy: 151, rx: 19, ry: 21 }, 48)), 'rgba(120,170,90,0.16)')
-  drawWater(ctx, cam, s.time)
-  drawGreen(ctx, cam)
-  drawBunkers(ctx, cam)
-
-  if (s.landing) {
-    const ring = projectPoly(cam, ellipsePoints({ cx: s.landing[0], cy: s.landing[1], rx: 0.22, ry: 0.22 }, 18))
-    fillPoly(ctx, ring, 'rgba(40,60,30,0.45)')
+  // Pitch mark where it landed (not in the water).
+  if (o.landing && o.splash === undefined) {
+    const l = toCanvas(x, o.landing)
+    ctx.fillStyle = 'rgba(25,40,20,0.45)'
+    ctx.beginPath(); ctx.ellipse(l[0], l[1], Math.max(2, pinScale * 0.18), Math.max(1, pinScale * 0.08), 0, 0, Math.PI * 2); ctx.fill()
   }
 
-  if (s.splash !== undefined && s.ball) {
-    const c = project(cam, [s.ball[0], s.ball[1], 0])
-    if (c) {
-      for (let i = 0; i < 3; i++) {
-        const k = s.splash * 1.4 - i * 0.25
-        if (k <= 0 || k > 1.2) continue
-        ctx.strokeStyle = `rgba(255,255,255,${0.7 * (1 - k / 1.2)})`
-        ctx.lineWidth = 2
-        ctx.beginPath(); ctx.ellipse(c[0], c[1], (cam.f * (0.3 + k * 1.6)) / c[2], (cam.f * (0.1 + k * 0.5)) / c[2], 0, 0, Math.PI * 2); ctx.stroke()
-      }
-    }
-  }
-
-  const items: Drawable[] = []
-  for (const t of TREES) { const d = treeDrawable(ctx, cam, t); if (d) items.push(d) }
-  const flag = flagDrawable(ctx, cam, s.time)
-  if (flag) items.push(flag)
-  const ball = ballDrawables(ctx, cam, s)
-  // Far to near; the ball and tracer (negative z) always last.
-  items.sort((a, b) => b.z - a.z)
-  for (const d of items) d.draw()
-
-  if (s.distanceLabel && s.ball) {
-    const a = project(cam, [s.ball[0], s.ball[1], 0])
-    const b = project(cam, [PIN[0], PIN[1], 0])
-    if (a && b) {
-      ctx.setLineDash([6, 5])
-      ctx.strokeStyle = 'rgba(255,255,255,0.9)'
+  // Splash rings.
+  if (o.splash !== undefined && o.ball) {
+    const c = toCanvas(x, o.ball.pt)
+    const sc = photoScaleAt(PIN) * x.s
+    for (let i = 0; i < 3; i++) {
+      const k = o.splash * 1.4 - i * 0.25
+      if (k <= 0 || k > 1.2) continue
+      ctx.strokeStyle = `rgba(255,255,255,${0.75 * (1 - k / 1.2)})`
       ctx.lineWidth = 2
-      ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke()
-      ctx.setLineDash([])
+      ctx.beginPath(); ctx.ellipse(c[0], c[1], sc * (0.3 + k * 1.5), sc * (0.12 + k * 0.6), 0, 0, Math.PI * 2); ctx.stroke()
     }
   }
-  for (const d of ball) d.draw()
 
-  if (s.distanceLabel && s.ball) {
-    const a = project(cam, [s.ball[0], s.ball[1], 0])
-    const b = project(cam, [PIN[0], PIN[1], 0])
-    if (a && b) {
-      // Above both the ball and the flag, so it never hides either.
-      const mx = (a[0] + b[0]) / 2, my = Math.min(a[1], b[1]) - Math.max(34, (cam.f * 2.8) / b[2])
-      ctx.font = '700 15px Inter, system-ui, sans-serif'
-      const tw = ctx.measureText(s.distanceLabel).width
-      ctx.fillStyle = 'rgba(14,24,16,0.82)'
-      roundRect(ctx, mx - tw / 2 - 10, my - 13, tw + 20, 26, 13)
-      ctx.fill()
-      ctx.fillStyle = '#ffffff'
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-      ctx.fillText(s.distanceLabel, mx, my)
+  // The cup and the flag, over the photo's own flag.
+  ctx.fillStyle = 'rgba(15,25,12,0.85)'
+  ctx.beginPath(); ctx.ellipse(pin[0], pin[1], Math.max(2, pinScale * 0.12), Math.max(1, pinScale * 0.05), 0, 0, Math.PI * 2); ctx.fill()
+  const poleH = Math.max(22, pinScale * 2.2)
+  const wave = Math.sin(o.time * 3.2) * 0.12
+  ctx.strokeStyle = '#f7f7f2'
+  ctx.lineWidth = Math.max(1.5, pinScale * 0.035)
+  ctx.beginPath(); ctx.moveTo(pin[0], pin[1]); ctx.lineTo(pin[0], pin[1] - poleH); ctx.stroke()
+  ctx.fillStyle = '#e4412b'
+  ctx.beginPath()
+  ctx.moveTo(pin[0], pin[1] - poleH)
+  ctx.lineTo(pin[0] + poleH * (0.42 + wave * 0.2), pin[1] - poleH * (0.86 + wave * 0.05))
+  ctx.lineTo(pin[0], pin[1] - poleH * 0.72)
+  ctx.closePath(); ctx.fill()
+
+  // Distance line from the ball to the pin.
+  if (o.distanceLabel && o.ball) {
+    const b = toCanvas(x, o.ball.pt)
+    ctx.setLineDash([6, 5]); ctx.strokeStyle = 'rgba(255,255,255,0.92)'; ctx.lineWidth = 2
+    ctx.beginPath(); ctx.moveTo(b[0], b[1]); ctx.lineTo(pin[0], pin[1]); ctx.stroke(); ctx.setLineDash([])
+  }
+
+  // Tracer.
+  if (o.trail && o.trail.length > 1) {
+    const pts = o.trail.map(p => toCanvas(x, p))
+    ctx.lineCap = 'round'
+    for (let i = 1; i < pts.length; i++) {
+      const a = i / pts.length
+      ctx.strokeStyle = `rgba(255, 244, 196, ${0.12 + a * 0.78})`
+      ctx.lineWidth = 1.4 + a * 2
+      ctx.beginPath(); ctx.moveTo(pts[i - 1][0], pts[i - 1][1]); ctx.lineTo(pts[i][0], pts[i][1]); ctx.stroke()
     }
+  }
+
+  // Ball.
+  const sink = o.sink ?? 0
+  if (o.ball && sink < 1) {
+    const g = toCanvas(x, o.ball.pt)
+    const lift = (o.ball.lift ?? 0) * x.s
+    const r = Math.max(2.4, o.ball.r * x.s) * (1 - sink)
+    if (o.ball.shadow) {
+      ctx.fillStyle = 'rgba(0,0,0,0.35)'
+      ctx.beginPath(); ctx.ellipse(g[0], g[1], r * 1.1, r * 0.45, 0, 0, Math.PI * 2); ctx.fill()
+    }
+    const c: Pt = [g[0], g[1] - lift]
+    const glow = ctx.createRadialGradient(c[0], c[1], 0, c[0], c[1], r * 3)
+    glow.addColorStop(0, 'rgba(255,255,255,0.55)')
+    glow.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.fillStyle = glow
+    ctx.beginPath(); ctx.arc(c[0], c[1], r * 3, 0, Math.PI * 2); ctx.fill()
+    ctx.fillStyle = '#ffffff'
+    ctx.beginPath(); ctx.arc(c[0], c[1], r, 0, Math.PI * 2); ctx.fill()
+  }
+
+  // Distance label above both the ball and the flag.
+  if (o.distanceLabel && o.ball) {
+    const b = toCanvas(x, o.ball.pt)
+    const mx = (b[0] + pin[0]) / 2, my = Math.min(b[1], pin[1] - poleH) - 22
+    ctx.font = '700 15px Inter, system-ui, sans-serif'
+    const tw = ctx.measureText(o.distanceLabel).width
+    ctx.fillStyle = 'rgba(14,24,16,0.85)'
+    roundRect(ctx, mx - tw / 2 - 10, my - 13, tw + 20, 26, 13)
+    ctx.fill()
+    ctx.fillStyle = '#ffffff'
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.fillText(o.distanceLabel, mx, my)
   }
 }
+
+/** Ground point of a ball in metres, as photo pixels with its lift in photo pixels. */
+export function ballOnGround(p: Pt, hopM: number): { pt: Pt; lift: number } {
+  return { pt: groundPx(p), lift: hopM * photoScaleAt(p) * 0.9 }
+}
+
+export { clamp01 }
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath()

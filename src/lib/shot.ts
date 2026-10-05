@@ -116,8 +116,8 @@ export function simulateShot({ handicap, mode, rng = Math.random }: { handicap: 
     lie = holed ? 'cup' : 'green'
   } else {
     const hcp = clamp(handicap, 0, 36)
-    const aim: Pt = [pin[0] - 1.8, pin[1] - 3]                   // plays for the roll, and aims into the wind
-    const carryErr = normal(rng, -3 - 0.25 * hcp, 6 + 0.6 * hcp)  // amateurs come up short
+    const aim: Pt = [pin[0] + 1, pin[1] - 3]                     // plays for the roll, a touch right of the water
+    const carryErr = normal(rng, -1 - 0.2 * hcp, 6 + 0.6 * hcp)   // amateurs come up short, and short is wet
     const sideErr = normal(rng, 2.4, 3 + 0.55 * hcp)              // 6 mph from the left pushes it right
     landing = [aim[0] + sideErr, aim[1] + carryErr]
     const landLie = lieAt(landing)
@@ -125,7 +125,8 @@ export function simulateShot({ handicap, mode, rng = Math.random }: { handicap: 
     const h = Math.atan2(landing[0], landing[1]) + normal(rng, 0, 0.05)
     rest = [landing[0] + roll * Math.sin(h), landing[1] + roll * Math.cos(h)]
     if (landLie === 'water') rest = landing
-    holed = roll > 0 && segmentDistance(pin, landing, rest) <= CUP_RADIUS_M && lieAt(pin) === 'green'
+    // It drops only if it rolls over the cup slowly, near the end of its roll; faster, it lips out.
+    holed = roll > 0 && segmentDistance(pin, landing, rest) <= CUP_RADIUS_M * 0.75 && dist(rest, pin) <= 1 && lieAt(pin) === 'green'
     if (holed) rest = pin
     lie = holed ? 'cup' : landLie === 'water' ? 'water' : lieAt(rest)
   }

@@ -2,10 +2,11 @@
  * The challenge on offer this week, the bay in the demo, and the simulator
  * stake tiers.
  *
- * Tiers are in US dollars for the Golfzon meeting. Every tier pays 1,000×
- * the stake, the top multiple of the on-course tiers and the $1 → $1,000
- * in the simulator plan. They are illustrative: simulator tiers get priced
- * from Golfzon's ace data (docs/golfzon-integration.md, section 8).
+ * Tiers are in US dollars for the Golfzon meeting, up to $100,000 for a
+ * $100 swing. Every tier pays 1,000× the stake, the top multiple of the
+ * on-course tiers and the $1 → $1,000 in the simulator plan. They are
+ * illustrative: simulator tiers get priced from Golfzon's ace data
+ * (docs/golfzon-integration.md, section 8).
  */
 import type { ChallengeSettings } from './protocol'
 
@@ -20,7 +21,10 @@ export const SIM_TIERS: SimTier[] = [
   { id: 'sim_5', stakeUsd: 5, prizeUsd: 5_000 },
   { id: 'sim_20', stakeUsd: 20, prizeUsd: 20_000 },
   { id: 'sim_50', stakeUsd: 50, prizeUsd: 50_000 },
+  { id: 'sim_100', stakeUsd: 100, prizeUsd: 100_000 },
 ]
+
+export const TOP_PRIZE_USD = Math.max(...SIM_TIERS.map(t => t.prizeUsd))
 
 export const DEFAULT_TIER_ID = 'sim_5'
 
@@ -51,21 +55,21 @@ export const LOWERED_SETTINGS: ChallengeSettings = {
 }
 
 export const CHALLENGE = {
-  challenge_id: 'gl-2026-w40',
+  challenge_id: 'gl-2026-w41',
   label: 'Hole of the week',
-  week: 40,
+  week: 41,
   course: 'Get Lucky Demo Links',
   hole: 7,
   par: 3 as const,
   tee: 'Black',
-  /** Tee to pin. 168 yards: a par 3 over the 140 m the on-course challenge requires. */
-  distance_m: 153.6,
-  /** Tee at the origin, y down the hole, x to the right. The pin is back left. */
-  pin: { x_m: -2.4, y_m: 153.6 },
-  pinLabel: 'Back left',
+  /** Tee to pin. 170 yards over water: a par 3 over the 140 m the on-course challenge requires. */
+  distance_m: 155.4,
+  /** Tee at the origin, y down the hole, x to the right. The pin is left, where the photo's flag is (src/lib/course.ts). */
+  pin: { x_m: -10.4, y_m: 155 },
+  pinLabel: 'Left',
   settings: CHALLENGE_SETTINGS,
-  valid_from: '2026-09-28T00:00:00Z',
-  valid_to: '2026-10-04T23:59:59Z',
+  valid_from: '2026-10-05T00:00:00Z',
+  valid_to: '2026-10-11T23:59:59Z',
   /** Minutes a paid entry stays armed before it is refunded. */
   entryWindowMin: 15,
 }

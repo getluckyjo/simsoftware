@@ -73,7 +73,7 @@ function HomeScreen({ state, actions }: { state: DemoState; actions: DemoActions
 
       <div className="ph-hero">
         <p className="ph-eyebrow">New · in a sim bay</p>
-        <h2 className="ph-h2">One swing.<br />Up to $50,000.</h2>
+        <h2 className="ph-h2">One swing.<br />Up to $100,000.</h2>
         <p className="ph-hero-copy">Play the Get Lucky Challenge on a GOLFZON bay. The simulator measures the shot, so there is nothing to film and nothing to sign.</p>
         <button className="btn-lime" onClick={actions.scan}><I.Scan size={18} /> Scan a bay</button>
       </div>
@@ -92,7 +92,7 @@ function HomeScreen({ state, actions }: { state: DemoState; actions: DemoActions
       </div>
 
       <div className="ph-how">
-        {[['Scan', 'the QR on the bay'], ['Back yourself', '$1 to $50'], ['Swing', 'the bay does the rest']].map(([a, b], i) => (
+        {[['Scan', 'the QR on the bay'], ['Back yourself', '$1 to $100'], ['Swing', 'the bay does the rest']].map(([a, b], i) => (
           <div key={a} className="ph-how-step"><span className="ph-how-n">{i + 1}</span><b>{a}</b><span>{b}</span></div>
         ))}
       </div>

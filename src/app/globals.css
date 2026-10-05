@@ -293,11 +293,11 @@ a { color: inherit; }
 .ph-locked svg { margin-top: 2px; flex-shrink: 0; }
 .ph-locked b { display: block; font-size: 12.5px; }
 .ph-locked span { display: block; font-size: 11.5px; color: rgba(245,238,222,0.62); margin-top: 1px; }
-.ph-tiers { display: grid; gap: 8px; margin-top: 4px; }
-.ph-tier { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 11px 16px; text-align: left; transition: border-color 0.15s ease, background 0.15s ease; }
+.ph-tiers { display: grid; gap: 7px; margin-top: 2px; }
+.ph-tier { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 8px 16px; text-align: left; transition: border-color 0.15s ease, background 0.15s ease; }
 .ph-tier:hover { border-color: rgba(201,169,78,0.5); }
 .ph-tier.sel { border-color: var(--gold); background: rgba(201,169,78,0.1); }
-.ph-tier b { font-family: var(--display); font-size: 26px; line-height: 1; }
+.ph-tier b { font-family: var(--display); font-size: 24px; line-height: 1; }
 .ph-tier small { display: block; font-size: 9.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(245,238,222,0.5); }
 .ph-tier-stake b { color: var(--cream); }
 .ph-tier-mult { font-family: var(--mono); font-size: 12px; color: var(--gold); background: rgba(201,169,78,0.14); border-radius: 8px; padding: 4px 8px; }
@@ -481,3 +481,10 @@ li.now .ph-step-dot { border-color: var(--gold); color: var(--gold); }
   .bay-nearest { flex-direction: row; align-items: baseline; justify-content: space-between; }
   .bay-lobby-h { font-size: 30px; }
 }
+
+/* The hole map, top right of the bay, the way a simulator shows it. */
+.bay-map { top: 56px; right: 14px; width: 92px; height: 210px; border-radius: 12px; overflow: hidden; background: rgba(10,18,12,0.72); border: 1px solid rgba(255,255,255,0.18); box-shadow: 0 6px 18px rgba(0,0,0,0.35); animation: rise 0.4s ease both; }
+.bay-map svg { display: block; width: 100%; height: 100%; }
+.bay-map span { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; padding: 3px 0; background: rgba(10,18,12,0.7); }
+@container (max-width: 640px) { .bay-map { display: none; } }
+@container (max-height: 520px) { .bay-map { display: none; } }
