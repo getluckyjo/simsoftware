@@ -116,7 +116,7 @@ export function simulateShot({ handicap, mode, rng = Math.random }: { handicap: 
     lie = holed ? 'cup' : 'green'
   } else {
     const hcp = clamp(handicap, 0, 36)
-    const aim: Pt = [pin[0] + 1, pin[1] - 3]                     // plays for the roll, a touch right of the water
+    const aim: Pt = [pin[0] + 1, pin[1] + 1]                     // a touch long and right: short and left is wet
     const carryErr = normal(rng, -1 - 0.2 * hcp, 6 + 0.6 * hcp)   // amateurs come up short, and short is wet
     const sideErr = normal(rng, 2.4, 3 + 0.55 * hcp)              // 6 mph from the left pushes it right
     landing = [aim[0] + sideErr, aim[1] + carryErr]

@@ -20,7 +20,7 @@ The golfer pays on the phone, GOLFZON arms the bay, the golfer swings, and GOLFZ
 |---|---|
 | The v0.1 contract (`src/lib/protocol.ts`) | GOLFZON's side. It runs in the browser and signs with a demo key we made (`src/lib/golfzon-mock.ts`) |
 | Ed25519 signing and verification | The shot and its physics (`src/lib/shot.ts`) |
-| The endpoint GOLFZON would call, `POST /api/v0/golfzon/events`, which checks signatures with Node's crypto | The bay screen. While it waits it plays a GOLFZON course render; once a golfer checks in it shows the challenge hole, an aerial photograph of a par 3 over water, with the ball, flag and distance drawn over it (`public/bay/`, `src/lib/render.ts`). The course images are for illustration, and the screen says so |
+| The endpoint GOLFZON would call, `POST /api/v0/golfzon/events`, which checks signatures with Node's crypto | The bay screen. While it waits it plays a GOLFZON course render; once a golfer checks in it shows the challenge hole, an aerial photograph of a par 3 over water, with the ball, flag and distance drawn over it (`public/bay/`, `src/lib/render.ts`). Both photos are upscaled 2× with ESRGAN (UpscalerJS's `esrgan-thick`, MIT) so the push-in on the green stays sharp. The course images are for illustration, and the screen says so |
 | The receiver's rules: signature, freshness, shape, settings lock, one shot per entry, duplicate events | Payments: sandbox copy, and nothing is charged |
 | The claim file's re-verification in the browser, and the evidence pack with its SHA-256 | The Nasmo video and the leaderboard players |
 

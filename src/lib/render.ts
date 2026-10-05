@@ -11,9 +11,10 @@
  * flight itself is a screen-space arc (the tee is behind the camera).
  */
 import { CHALLENGE } from './challenge'
-import { PHOTO_SIZE, photoScaleAt, worldToPhoto, type Pt } from './course'
+import { PHOTO_H, PHOTO_SIZE, photoScaleAt, worldToPhoto, type Pt } from './course'
 import type { SimulatedShot } from './shot'
 
+// w and h are the coordinate space positions are given in; the files are twice that, upscaled, so a push-in stays sharp.
 export const ATTRACT_IMG = { src: '/bay/attract.jpg', w: 1377, h: 687 }
 export const HOLE_IMG = { src: '/bay/hole-7.jpg', w: PHOTO_SIZE.w, h: PHOTO_SIZE.h }
 
@@ -24,6 +25,8 @@ interface Xform { s: number; ox: number; oy: number }
 const PIN: Pt = [CHALLENGE.pin.x_m, CHALLENGE.pin.y_m]
 export const PIN_PX: Pt = worldToPhoto(PIN)
 const GREEN_CENTRE_PX: Pt = [326, 392]
+/** The sun in the photo is behind and to the left: shadows fall to the right and towards the camera. */
+const SHADOW_DIR: Pt = [0.88, 0.2]
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t
 const clamp01 = (t: number) => Math.min(1, Math.max(0, t))
@@ -113,6 +116,12 @@ export interface HoleOverlay {
   sink?: number
   /** Seconds since the ball went in the water. */
   splash?: number
+  /** Seconds since the ball came down on land. */
+  impact?: number
+  /** Before the shot: the yardage over the flag, and the target ring round the cup. */
+  pinTag?: string
+  /** Seconds since the ball dropped. */
+  holedFor?: number
 }
 
 export function drawHole(ctx: CanvasRenderingContext2D, img: HTMLImageElement | undefined, w: number, h: number, view: View, o: HoleOverlay) {
@@ -142,20 +151,37 @@ export function drawHole(ctx: CanvasRenderingContext2D, img: HTMLImageElement | 
     }
   }
 
-  // The cup and the flag, over the photo's own flag.
-  ctx.fillStyle = 'rgba(15,25,12,0.85)'
-  ctx.beginPath(); ctx.ellipse(pin[0], pin[1], Math.max(2, pinScale * 0.12), Math.max(1, pinScale * 0.05), 0, 0, Math.PI * 2); ctx.fill()
-  const poleH = Math.max(22, pinScale * 2.2)
-  const wave = Math.sin(o.time * 3.2) * 0.12
-  ctx.strokeStyle = '#f7f7f2'
-  ctx.lineWidth = Math.max(1.5, pinScale * 0.035)
-  ctx.beginPath(); ctx.moveTo(pin[0], pin[1]); ctx.lineTo(pin[0], pin[1] - poleH); ctx.stroke()
-  ctx.fillStyle = '#e4412b'
-  ctx.beginPath()
-  ctx.moveTo(pin[0], pin[1] - poleH)
-  ctx.lineTo(pin[0] + poleH * (0.42 + wave * 0.2), pin[1] - poleH * (0.86 + wave * 0.05))
-  ctx.lineTo(pin[0], pin[1] - poleH * 0.72)
-  ctx.closePath(); ctx.fill()
+  // Where it came down: a ring that spreads out over the grass.
+  if (o.impact !== undefined && o.impact < 0.9 && o.landing) {
+    const k = o.impact / 0.9
+    const c = worldOf(o.landing)
+    ctx.strokeStyle = `rgba(255,255,255,${0.7 * (1 - k)})`
+    ctx.lineWidth = 2
+    strokeRing(ctx, x, c, 0.4 + k * 2.2)
+  }
+
+  // Before the shot, a target round the cup, breathing slowly.
+  if (o.pinTag) {
+    const pulse = 0.5 + 0.5 * Math.sin(o.time * 2.2)
+    ctx.lineWidth = 1.5
+    ctx.strokeStyle = `rgba(255,255,255,${0.32 + pulse * 0.2})`
+    strokeRing(ctx, x, PIN, 2.5)
+    ctx.strokeStyle = `rgba(214,251,75,${0.45 + pulse * 0.3})`
+    strokeRing(ctx, x, PIN, 1)
+  }
+
+  // It dropped: gold rings go out from the cup.
+  if (o.holedFor !== undefined && o.holedFor < 3) {
+    for (let i = 0; i < 3; i++) {
+      const k = (o.holedFor - i * 0.4) / 1.6
+      if (k <= 0 || k >= 1) continue
+      ctx.strokeStyle = `rgba(232,212,139,${0.95 * (1 - k)})`
+      ctx.lineWidth = 1 + 3 * (1 - k)
+      strokeRing(ctx, x, PIN, 0.3 + k * 5)
+    }
+  }
+
+  const poleH = drawFlag(ctx, pin, pinScale, o.time)
 
   // Distance line from the ball to the pin.
   if (o.distanceLabel && o.ball) {
@@ -164,15 +190,17 @@ export function drawHole(ctx: CanvasRenderingContext2D, img: HTMLImageElement | 
     ctx.beginPath(); ctx.moveTo(b[0], b[1]); ctx.lineTo(pin[0], pin[1]); ctx.stroke(); ctx.setLineDash([])
   }
 
-  // Tracer.
+  // Tracer: a warm glow with a bright core, fading towards the tee.
   if (o.trail && o.trail.length > 1) {
     const pts = o.trail.map(p => toCanvas(x, p))
     ctx.lineCap = 'round'
-    for (let i = 1; i < pts.length; i++) {
-      const a = i / pts.length
-      ctx.strokeStyle = `rgba(255, 244, 196, ${0.12 + a * 0.78})`
-      ctx.lineWidth = 1.4 + a * 2
-      ctx.beginPath(); ctx.moveTo(pts[i - 1][0], pts[i - 1][1]); ctx.lineTo(pts[i][0], pts[i][1]); ctx.stroke()
+    for (const [glow, width, alpha] of [[true, 7, 0.22], [false, 2.6, 0.95]] as const) {
+      for (let i = 1; i < pts.length; i++) {
+        const a = i / pts.length
+        ctx.strokeStyle = glow ? `rgba(255, 200, 70, ${a * a * alpha})` : `rgba(255, 249, 226, ${0.08 + a * alpha})`
+        ctx.lineWidth = (glow ? 2 : 0.8) + a * width
+        ctx.beginPath(); ctx.moveTo(pts[i - 1][0], pts[i - 1][1]); ctx.lineTo(pts[i][0], pts[i][1]); ctx.stroke()
+      }
     }
   }
 
@@ -199,16 +227,108 @@ export function drawHole(ctx: CanvasRenderingContext2D, img: HTMLImageElement | 
   // Distance label above both the ball and the flag.
   if (o.distanceLabel && o.ball) {
     const b = toCanvas(x, o.ball.pt)
-    const mx = (b[0] + pin[0]) / 2, my = Math.min(b[1], pin[1] - poleH) - 22
-    ctx.font = '700 15px Inter, system-ui, sans-serif'
-    const tw = ctx.measureText(o.distanceLabel).width
-    ctx.fillStyle = 'rgba(14,24,16,0.85)'
-    roundRect(ctx, mx - tw / 2 - 10, my - 13, tw + 20, 26, 13)
-    ctx.fill()
-    ctx.fillStyle = '#ffffff'
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
-    ctx.fillText(o.distanceLabel, mx, my)
+    tag(ctx, (b[0] + pin[0]) / 2, Math.min(b[1], pin[1] - poleH) - 22, o.distanceLabel, false)
+  } else if (o.pinTag) {
+    tag(ctx, pin[0], pin[1] - poleH - 20, o.pinTag, true)
   }
+}
+
+/** The flagstick: cup, shadow, pole and a flag that moves in the wind. Returns the pole's height on screen. */
+function drawFlag(ctx: CanvasRenderingContext2D, pin: Pt, pinScale: number, time: number): number {
+  const poleH = Math.max(26, pinScale * 2.3)
+  const poleW = Math.max(1.6, pinScale * 0.045)
+  const [px, py] = pin
+
+  // Its shadow on the green.
+  ctx.lineCap = 'round'
+  ctx.strokeStyle = 'rgba(16,34,10,0.3)'
+  ctx.lineWidth = poleW * 1.2
+  ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + SHADOW_DIR[0] * poleH * 0.62, py + SHADOW_DIR[1] * poleH * 0.62); ctx.stroke()
+
+  // The cup, with its white liner catching the light.
+  const rx = Math.max(2.2, pinScale * 0.13), ry = Math.max(1.1, pinScale * 0.055)
+  ctx.fillStyle = 'rgba(12,20,9,0.92)'
+  ctx.beginPath(); ctx.ellipse(px, py, rx, ry, 0, 0, Math.PI * 2); ctx.fill()
+  ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 1
+  ctx.beginPath(); ctx.ellipse(px, py, rx, ry, 0, 0.1, Math.PI - 0.1); ctx.stroke()
+
+  // The pole, outlined so it reads against the sand and the sky.
+  ctx.strokeStyle = 'rgba(0,0,0,0.35)'; ctx.lineWidth = poleW + 1.4
+  ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px, py - poleH); ctx.stroke()
+  ctx.strokeStyle = '#fbfbf4'; ctx.lineWidth = poleW
+  ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px, py - poleH); ctx.stroke()
+
+  // The flag: a curved cloth with a travelling ripple, darker in its folds.
+  const fw = poleH * 0.52, fh = poleH * 0.32, top = py - poleH
+  const ph = time * 5.2
+  const wv = (k: number) => Math.sin(ph - k * 3.4) * fh * 0.13 * k
+  ctx.beginPath()
+  ctx.moveTo(px, top)
+  ctx.bezierCurveTo(px + fw * 0.33, top + wv(0.33) - fh * 0.04, px + fw * 0.66, top + wv(0.66) + fh * 0.02, px + fw, top + wv(1) + fh * 0.08)
+  ctx.lineTo(px + fw * 0.96, top + fh + wv(1) - fh * 0.04)
+  ctx.bezierCurveTo(px + fw * 0.66, top + fh + wv(0.66), px + fw * 0.33, top + fh + wv(0.33) - fh * 0.02, px, top + fh)
+  ctx.closePath()
+  const g = ctx.createLinearGradient(px, 0, px + fw, 0)
+  const fold = (k: number) => 0.5 + 0.5 * Math.cos(ph - k * 3.4)
+  for (const k of [0, 0.33, 0.66, 1]) g.addColorStop(k, `hsl(7, 82%, ${44 + fold(k) * 14}%)`)
+  ctx.fillStyle = g
+  ctx.fill()
+  ctx.strokeStyle = 'rgba(90,10,4,0.45)'; ctx.lineWidth = 0.8; ctx.stroke()
+
+  // The ball on top of the pole.
+  ctx.fillStyle = '#ffffff'
+  ctx.beginPath(); ctx.arc(px, top - poleW * 0.2, poleW * 0.9, 0, Math.PI * 2); ctx.fill()
+  return poleH
+}
+
+/** A circle of r metres on the ground, through the photo's perspective. */
+function strokeRing(ctx: CanvasRenderingContext2D, x: Xform, c: Pt, r: number) {
+  ctx.beginPath()
+  for (let i = 0; i <= 48; i++) {
+    const a = (i / 48) * Math.PI * 2
+    const p = toCanvas(x, worldToPhoto([c[0] + Math.cos(a) * r, c[1] + Math.sin(a) * r]))
+    if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1])
+  }
+  ctx.stroke()
+}
+
+/** Back from photo pixels to the ground, for points the overlay only has on the photo. */
+function worldOf(p: Pt): Pt {
+  const [u, v] = p, H = PHOTO_H
+  // Invert the homography by solving the 2×2 system it gives for (x, y).
+  const a = H[0][0] - u * H[2][0], b = H[0][1] - u * H[2][1], c = u * H[2][2] - H[0][2]
+  const d = H[1][0] - v * H[2][0], e = H[1][1] - v * H[2][1], f = v * H[2][2] - H[1][2]
+  const det = a * e - b * d
+  return [(c * e - b * f) / det, (a * f - c * d) / det]
+}
+
+/** A dark pill with a pointer, the way a simulator labels the flag. */
+function tag(ctx: CanvasRenderingContext2D, cx: number, cy: number, text: string, pointer: boolean) {
+  ctx.font = '700 15px Inter, system-ui, sans-serif'
+  const tw = ctx.measureText(text).width
+  ctx.fillStyle = 'rgba(14,24,16,0.86)'
+  roundRect(ctx, cx - tw / 2 - 11, cy - 13, tw + 22, 26, 13)
+  ctx.fill()
+  if (pointer) {
+    ctx.beginPath(); ctx.moveTo(cx - 6, cy + 12); ctx.lineTo(cx, cy + 19); ctx.lineTo(cx + 6, cy + 12); ctx.closePath(); ctx.fill()
+  }
+  ctx.fillStyle = '#ffffff'
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+  ctx.fillText(text, cx, cy + 0.5)
+}
+
+/** The screen's finish over either scene: a soft vignette, and shade at the top behind the hole card and chips. */
+export function drawGrade(ctx: CanvasRenderingContext2D, w: number, h: number) {
+  const v = ctx.createRadialGradient(w / 2, h * 0.55, Math.min(w, h) * 0.35, w / 2, h * 0.55, Math.hypot(w, h) * 0.62)
+  v.addColorStop(0, 'rgba(0,0,0,0)')
+  v.addColorStop(1, 'rgba(0,0,0,0.34)')
+  ctx.fillStyle = v
+  ctx.fillRect(0, 0, w, h)
+  const top = ctx.createLinearGradient(0, 0, 0, Math.min(140, h * 0.22))
+  top.addColorStop(0, 'rgba(6,12,8,0.38)')
+  top.addColorStop(1, 'rgba(6,12,8,0)')
+  ctx.fillStyle = top
+  ctx.fillRect(0, 0, w, Math.min(140, h * 0.22))
 }
 
 /** Ground point of a ball in metres, as photo pixels with its lift in photo pixels. */

@@ -64,7 +64,7 @@ describe('challenge week', () => {
 })
 
 describe('shot model', () => {
-  it('natural shots look like a 168-yard iron', () => {
+  it('natural shots look like a 164-yard iron', () => {
     const rng = mulberry32(1)
     const shots = Array.from({ length: 2000 }, () => simulateShot({ handicap: 10, mode: 'natural', rng }))
     const carries = shots.map(s => s.carryM).sort((a, b) => a - b)

@@ -62,11 +62,11 @@ export const CHALLENGE = {
   hole: 7,
   par: 3 as const,
   tee: 'Black',
-  /** Tee to pin. 170 yards over water: a par 3 over the 140 m the on-course challenge requires. */
-  distance_m: 155.4,
-  /** Tee at the origin, y down the hole, x to the right. The pin is left, where the photo's flag is (src/lib/course.ts). */
-  pin: { x_m: -10.4, y_m: 155 },
-  pinLabel: 'Left',
+  /** Tee to pin. 164 yards over water: a par 3 over the 140 m the on-course challenge requires. */
+  distance_m: 150,
+  /** Tee at the origin, y down the hole, x to the right. The pin is in the middle of the green (src/lib/course.ts). */
+  pin: { x_m: 0, y_m: 150 },
+  pinLabel: 'Middle',
   settings: CHALLENGE_SETTINGS,
   /** Minutes a paid entry stays armed before it is refunded. */
   entryWindowMin: 15,
